@@ -8,21 +8,30 @@
               <h4 class="text-white text-center mb-0 mt-0">Đăng nhập</h4>
             </div>
             <div class="card-body">
-              <form @submit.prevent="login()" class="p-2">
+              <form @submit.prevent="login()" method="POST" class="p-2">
+                <div class="form-group mb-3">
+                  <div v-if="errors.length > 0">
+                    <div v-for="err in errors" :key="err.message" class="alert alert-danger">
+                      {{ err.message }}
+                    </div>
+                  </div>
+                </div>
                 <div class="form-group mb-3">
                   <label for="emailaddress">Email Address :</label>
-                  <input v-model="form.email"
+                  <input
+                    v-model="form.email"
                     class="form-control"
                     type="email"
                     id="emailaddress"
                     name="email"
-                    placeholder="Nhập tài khoản"
+                    placeholder="Nhập email"
                   />
                 </div>
 
                 <div class="form-group mb-3">
                   <label for="password">Password :</label>
-                  <input v-model="form.password"
+                  <input
+                    v-model="form.password"
                     class="form-control"
                     type="password"
                     id="password"
@@ -33,7 +42,7 @@
 
                 <div class="form-group mb-4">
                   <div class="checkbox checkbox-success">
-                    <input id="remember" name="remember" type="checkbox" />
+                    <input id="remember" v-model="form.remember_token" name="remember" type="checkbox" />
                     <label for="remember"> Ghi nhớ mật khẩu </label>
                     <a href="" class="text-muted float-right">Quên mật khẩu?</a>
                   </div>
@@ -65,28 +74,35 @@
 </template>
 
 <script>
-import axios from 'axios';
+import VueCookies from 'vue-cookies';
+import {loginUrl} from '../../../config';
 export default {
-  data(){
-    return{
-      errors:[],
-      form:{
-        email:'',
-        password:''
-      }
+    data(){
+        return{
+            form:{
+                email:'',
+                password:'',
+                remember_token:''
+            },
+            errors:[]
+        }
+    },
+    methods:{
+        login(){
+          this.errors = [];
+          axios.post(loginUrl,this.form)
+          .then(res =>{
+            if(res.data.status===true){
+              VueCookies.set('_token' , res.data.token , "10min");
+              window.location.href = '/admin/dashboard';
+            }
+            // localStorage.setItem('access_token',res.data.token);
+            // axios.defaults.headers.common['Authorization'] = res.data.token
+          })
+          .catch(e => {
+            this.errors.push();
+          })
+        }
     }
-  },
-  methods:{
-    login(){
-      axios.post('http://localhost:8000/api/login',this.form)
-      .then(response => {
-        localStorage.setItem('access_token', response.data.token);
-        this.$router.push('/admin/dashboard?token=' + localStorage.getItem('access_token'))
-      })
-      .catch(e => {
-          this.errors.push(e);
-      })
-    }
-  }
 };
 </script>

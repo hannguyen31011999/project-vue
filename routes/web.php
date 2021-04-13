@@ -15,15 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// login
+Route::get('/admin/login','backend\ViewController@viewLogin');
 
-
-
-Route::get('/admin/login',function(){
-    return view('backend.login.index');
+Route::group(['middleware' => 'check.jwt','prefix'=>'admin'], function () {
+    // dashboard
+    Route::get('/dashboard','backend\ViewController@viewDashBoard');
+    // Categories
+    Route::get('/categories','backend\ViewController@viewCategories');
 });
 
-Route::group(['middleware' => 'auth.jwt'], function () {
-    Route::get('/admin/dashboard',function(){
-        return view('backend.dashboard.index');
-    });
-});
+

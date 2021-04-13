@@ -17,14 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Login
-Route::group(['middleware' => 'JwtCheckLogin'], function () {
-    Route::get('/user','frontend\api\ApiLoginController@getAll');
+
+Route::group(['middleware' => 'auth.jwt','namespace'=>'backend\api'], function () {
+    Route::get('/admin/user','ApiLoginController@getUserLogin');
+    Route::get('/admin/logout','ApiLoginController@logout');
+
+    // categories api
+    Route::get('admin/categories/list','ApiCategoriesController@index');
+    Route::post('admin/categories/create','ApiCategoriesController@store');
 });
 
-
-
-Route::get('/logout','frontend\api\ApiLoginController@Logout');
-
-Route::post('/login','frontend\api\ApiLoginController@Login');
-
+Route::post('/admin/login','backend\api\ApiLoginController@login');

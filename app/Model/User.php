@@ -10,15 +10,15 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
-    protected $table = 'bds_user';
-
-    protected $primaryKey = 'id';
+    protected $table = "bds_user";
+    
+    protected $primaryKey = "id";
 
     protected $fillable = [
         'id',
         'id_role',
-        'password',
         'email',
+        'password',
         'fullname',
         'birth_date',
         'gender',
@@ -39,10 +39,8 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->getKey();
     }
-
     public function getJWTCustomClaims()
     {
         return [];
     }
-
 }

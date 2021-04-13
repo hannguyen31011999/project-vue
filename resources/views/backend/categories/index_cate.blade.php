@@ -1,10 +1,11 @@
 @extends('backend.master')
 
 @section('title')
-    Trang Quản Lý
+    Trang Danh Mục
 @endsection
 
 @section('css')
+    
 @endsection
 
 @section('content')
@@ -13,4 +14,5 @@
 </div>
 @endsection
 @section('js')
+    
 @endsection
