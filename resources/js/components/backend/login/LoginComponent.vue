@@ -93,7 +93,7 @@ export default {
           axios.post(loginUrl,this.form)
           .then(res =>{
             if(res.data.status===true){
-              VueCookies.set('_token' , res.data.token , "10min");
+              VueCookies.set('_token' , res.data.token , "20min");
               window.location.href = '/admin/dashboard';
             }
             // localStorage.setItem('access_token',res.data.token);

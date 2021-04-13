@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('frontend.master');
 });
 
 // login
@@ -23,6 +23,8 @@ Route::group(['middleware' => 'check.jwt','prefix'=>'admin'], function () {
     Route::get('/dashboard','backend\ViewController@viewDashBoard');
     // Categories
     Route::get('/categories','backend\ViewController@viewCategories');
+    // TypeProduct
+    Route::get('/type','backend\ViewController@viewTypeProduct');
 });
 
 

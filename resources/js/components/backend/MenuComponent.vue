@@ -22,19 +22,10 @@
           </li>
 
           <li>
-            <a href="javascript: void(0);" class="waves-effect">
+            <a href="" @click.prevent="redirectURL(3)" class="waves-effect">
               <i class="ion-ios-apps"></i>
-              <span> Components </span>
-              <span class="menu-arrow"></span>
+              <span> Quản lý loại tin </span>
             </a>
-            <ul class="nav-second-level" aria-expanded="false">
-              <li><a href="components-grid.html">Grid</a></li>
-              <li><a href="components-portlets.html">Portlets</a></li>
-              <li><a href="components-widgets.html">Widgets</a></li>
-              <li><a href="components-nestable-list.html">Nesteble</a></li>
-              <li><a href="components-calendar.html">Calendar</a></li>
-              <li><a href="components-range-sliders.html">Range Slider</a></li>
-            </ul>
           </li>
 
           <li>
@@ -139,6 +130,10 @@ export default {
         }
         case 2:{
           window.location.href = '/admin/categories'
+          break;
+        }
+        case 3:{
+          window.location.href = '/admin/type'
           break;
         }
         default:{

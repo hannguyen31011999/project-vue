@@ -2,8 +2,10 @@ export const apiDomain = 'http://localhost:8000/api/admin/';
 export const loginUrl = apiDomain + 'login';
 export const getUserUrl = apiDomain + 'user?token=';
 export const logoutUrl = apiDomain + 'logout?token=';
+// categories
 export const createCategoriesUrl = apiDomain + 'categories/create?token=';
 export const listCategoriesUrl = apiDomain + 'categories/list?token=';
+export const seachCategoriesUrl = apiDomain + 'categories/seach?token=';
 import VueCookies from 'vue-cookies';
 
 export const getToken = function(){

@@ -23,4 +23,9 @@ class ViewController extends Controller
     {
         return view($this->module.'.categories.index_cate');
     }
+
+    public function viewTypeProduct()
+    {
+        return view('backend.type_product.index_type');
+    }
 }

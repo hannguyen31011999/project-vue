@@ -1,8 +1,9 @@
 import DashBoardComponent from './components/backend/dashboard/DashBoardComponent.vue';
 import LoginComponent from './components/backend/login/LoginComponent.vue';
 // categories
-import ListCategoreisComponent from './components/backend/categories/ListCategoreisComponent.vue';
-import EditCategoreisComponent from './components/backend/categories/EditCategoreisComponent.vue';
+import ListCategoriesComponent from './components/backend/categories/ListCategoriesComponent.vue';
+// type product
+import ListTypeProductComponent from './components/backend/type_product/ListTypeProductComponent.vue';
 export const routes = [
     {
         name:'adminLogin',
@@ -18,11 +19,12 @@ export const routes = [
     {
         name:'list_categories',
         path:'/admin/categories',
-        component:ListCategoreisComponent
+        component:ListCategoriesComponent
     },
+    // type
     {
-        name:'edit_categories',
-        path:'/admin/categories/edit/:id',
-        component:EditCategoreisComponent
+        name:'list_type',
+        path:'/admin/type',
+        component:ListTypeProductComponent
     }
 ]

@@ -15,9 +15,11 @@ class ApiCategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    // http://localhost:8000/api/admin/categories/list?page=1
     public function index()
     {
-        $categories = Categories::all();
+        $categories = Categories::paginate(5);
         return response()->json([
             'data'=>$categories,
             'status'=>true,
@@ -26,30 +28,23 @@ class ApiCategoriesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    // http://localhost:8000/api/admin/categories/create?categories_name=demo
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),
             [
-                'categories_name'=>'required|unique:bds_categories,categories_name'
+                'categories_name'=>'required|unique:bds_categories,categories_name|max:255'
             ],
             [
                 'categories_name.required'=>'Categories invalid',
-                'categories_name.unique'=>'Categories is exist'
+                'categories_name.unique'=>'Categories is exist',
+                'categories_name.max'=>'Character in categories so long'
             ]
         );
         if($validator->fails()){
@@ -59,24 +54,18 @@ class ApiCategoriesController extends Controller
                 'errors'=>$validator->errors()
             ]);
         }else{
-            $categories = Categories::create($request->all());
-            return response()->json([
-                'data'=>$categories,
-                'status'=>true,
-                'errors'=>null
-            ]);
-        }   
-    }
+            try{
+                $categories = Categories::create($request->all());
+                return response()->json([
+                    'data'=>$categories,
+                    'status'=>true,
+                    'errors'=>null
+                ]);
+            }catch(Exception $e){
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+            }
+            
+        }   
     }
 
     /**
@@ -85,9 +74,21 @@ class ApiCategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    //  http://localhost:8000/api/admin/categories/edit/1
     public function edit($id)
     {
-        //
+        try{
+            $categories = Categories::findOrFail($id);
+            return response()->json([
+                'data'=>$categories,
+                'status'=>true,
+                'errors'=>null
+            ]);
+        }catch(Exception $e){
+
+        }
+        
     }
 
     /**
@@ -97,9 +98,42 @@ class ApiCategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    
+    //  http://localhost:8000/api/admin/categories/update/1?categories_name=abc
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(),
+            [
+                'categories_name'=>'required|unique:bds_categories,categories_name|max:255'
+            ],
+            [
+                'categories_name.required'=>'Categories invalid',
+                'categories_name.unique'=>'Categories is exist',
+                'categories_name.max'=>'Character in categories so long'
+            ]
+        );
+        if($validator->fails()){
+            return response()->json([
+                'data'=>null,
+                'status'=>false,
+                'errors'=>$validator->errors()
+            ]);
+        }else{
+            try{
+                $categories = Categories::findOrFail($id);
+                if($categories->update($request->all())){
+                    return response()->json([
+                        'data'=>$categories,
+                        'status'=>true,
+                        'errors'=>null
+                    ]);
+                }
+                
+            }catch(Exception $e){
+
+            }
+            
+        }   
     }
 
     /**
@@ -108,8 +142,37 @@ class ApiCategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    //  http://localhost:8000/api/admin/categories/delete/7
     public function destroy($id)
     {
-        //
+        try{
+            $categories = Categories::findOrFail($id)->delete();
+            if($categories){
+                return response()->json([
+                    'status'=>true,
+                    'errors'=>null
+                ]);
+            }
+            
+        }catch(Exception $e){
+            return response()->json([
+                'status'=>false,
+                'errors'=>null
+            ]);
+        }
+    }
+
+    // http://localhost:8000/api/admin/categories/seach
+    public function seach(Request $request)
+    {
+        $categories = Categories::where('id',$request->keyword)
+                                    ->orWhere('categories_name','like',$request->keyword.'%')
+                                    ->get();
+        return response()->json([
+            'data'=>$categories,
+            'status'=>true,
+            'errors'=>null
+        ]);
     }
 }

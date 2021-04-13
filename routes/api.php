@@ -18,13 +18,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::group(['middleware' => 'auth.jwt','namespace'=>'backend\api'], function () {
-    Route::get('/admin/user','ApiLoginController@getUserLogin');
-    Route::get('/admin/logout','ApiLoginController@logout');
+Route::group(['middleware' => 'auth.jwt','namespace'=>'backend\api','prefix'=>'admin'], function () {
+    Route::get('/user','ApiLoginController@getUserLogin');
+    Route::get('/logout','ApiLoginController@logout');
 
     // categories api
-    Route::get('admin/categories/list','ApiCategoriesController@index');
-    Route::post('admin/categories/create','ApiCategoriesController@store');
+    Route::group(['prefix'=>'categories'],function(){
+        Route::get('/list','ApiCategoriesController@index');
+        Route::post('/create','ApiCategoriesController@store');
+        Route::get('/edit/{id}','ApiCategoriesController@edit');
+        Route::post('/update/{id}','ApiCategoriesController@update');
+        Route::delete('/delete/{id}','ApiCategoriesController@destroy');
+        Route::get('/seach','ApiCategoriesController@seach');
+    });
+    
 });
 
 Route::post('/admin/login','backend\api\ApiLoginController@login');
