@@ -163,11 +163,12 @@ class ApiCategoriesController extends Controller
         }
     }
 
-    // http://localhost:8000/api/admin/categories/seach
+    // http://localhost:8000/api/admin/categories/seach?keyword=12
     public function seach(Request $request)
     {
         $categories = Categories::where('id',$request->keyword)
                                     ->orWhere('categories_name','like',$request->keyword.'%')
+                                    ->take(5)
                                     ->get();
         return response()->json([
             'data'=>$categories,

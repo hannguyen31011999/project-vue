@@ -6,6 +6,10 @@ export const logoutUrl = apiDomain + 'logout?token=';
 export const createCategoriesUrl = apiDomain + 'categories/create?token=';
 export const listCategoriesUrl = apiDomain + 'categories/list?token=';
 export const seachCategoriesUrl = apiDomain + 'categories/seach?token=';
+// type
+export const createTypeUrl = apiDomain + 'type/create?token=';
+export const listTypeUrl = apiDomain + 'type/list?token=';
+export const seachTypeUrl = apiDomain + 'type/seach?token=';
 import VueCookies from 'vue-cookies';
 
 export const getToken = function(){

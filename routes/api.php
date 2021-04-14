@@ -32,6 +32,15 @@ Route::group(['middleware' => 'auth.jwt','namespace'=>'backend\api','prefix'=>'a
         Route::get('/seach','ApiCategoriesController@seach');
     });
     
+    // typeproduct api
+    Route::group(['prefix'=>'type'],function(){
+        Route::get('/list','ApiTypeProductController@index');
+        Route::post('/create','ApiTypeProductController@store');
+        Route::get('/edit/{id}','ApiTypeProductController@edit');
+        Route::post('/update/{id}','ApiTypeProductController@update');
+        Route::delete('/delete/{id}','ApiTypeProductController@destroy');
+        Route::get('/seach','ApiTypeProductController@seach');
+    });
 });
 
 Route::post('/admin/login','backend\api\ApiLoginController@login');

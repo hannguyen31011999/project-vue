@@ -72,7 +72,8 @@
                         </td>
                       </tr>
                     </tbody>
-                    <nav
+                  </table>
+                                     <nav
                       aria-label="Page navigation example"
                       style="margin-top: 5px"
                     >
@@ -117,7 +118,6 @@
                         </li>
                       </ul>
                     </nav>
-                  </table>
                 </div>
               </div>
             </div>
@@ -126,7 +126,72 @@
         </div>
       </div>
     </div>
-    <createCategories></createCategories>
+
+    <!-- modal create -->
+    <div
+      id="categories"
+      class="modal fade"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+      style="display: none"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="myModalLabel">Create Categories</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-hidden="true"
+            >
+              ×
+            </button>
+          </div>
+          <form @submit.prevent="createCategories()">
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="categories">Categories</label>
+                    <input
+                      type="text"
+                      v-model="form.categories_name"
+                      class="form-control"
+                    />
+                    <span style="color: red; margin-top: 5px">{{
+                      errors_categories
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary waves-effect"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary waves-effect waves-light"
+              >
+                Create
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal create -->
+
     <!-- modal edit -->
     <div
       id="editCategories"
@@ -230,6 +295,21 @@ export default {
         })
         .catch((e) => {});
     },
+    createCategories() {
+      axios
+        .post(createCategoriesUrl + getToken(), this.form)
+        .then((res) => {
+          if (res.data.status === true) {
+            // this.categories.push(res.data.data);
+            this.getListCategories();
+            this.form.categories_name = "";
+            $("#categories").modal("hide");
+          } else {
+            this.errors_categories = res.data.errors.categories_name[0];
+          }
+        })
+        .catch((e) => {});
+    },
     changePage(page) {
       if (page === 0) {
         page += this.pagination.current_page + 1;
@@ -325,15 +405,23 @@ export default {
         .catch((e) => {});
     },
     seachCategories() {
-      axios
+      if(this.keyword!==''){
+        $("#last").addClass("disabled");
+        axios
         .get(seachCategoriesUrl + getToken() + "&keyword=" + this.keyword)
         .then((res) => {
           if (res.data.status === true) {
             this.categories.id = null;
             this.categories = res.data.data;
+            this.pagination = {};
           }
         })
         .catch((e) => {});
+      }
+      else{
+        $("#last").removeClass("disabled");
+        this.getListCategories();
+      }
     },
   },
   created() {

@@ -9,16 +9,10 @@ import VueRouter from 'vue-router';
 import NavbarComponent from './components/backend/NavbarComponent.vue';
 import MenuComponent from './components/backend/MenuComponent.vue';
 
-// categories
-import Add from './components/backend/categories/Add.vue';
 import {routes} from './router.js';
 
 Vue.component('navbarComponent',NavbarComponent);
 Vue.component('menuComponent', MenuComponent);
-
-// modal categories
-Vue.component('createCategories',Add);
-
 
 Vue.use(VueRouter);
 
