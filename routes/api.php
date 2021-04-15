@@ -18,6 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+// login admin
+Route::post('/admin/login','backend\api\ApiLoginController@login');
+
 Route::group(['middleware' => 'auth.jwt','namespace'=>'backend\api','prefix'=>'admin'], function () {
     Route::get('/user','ApiLoginController@getUserLogin');
     Route::get('/logout','ApiLoginController@logout');
@@ -43,4 +46,16 @@ Route::group(['middleware' => 'auth.jwt','namespace'=>'backend\api','prefix'=>'a
     });
 });
 
-Route::post('/admin/login','backend\api\ApiLoginController@login');
+// api user
+Route::group(['namespace'=>'frontend\api'],function(){
+    // categories
+    Route::get('/categories','ApiHomeController@getCategories');
+    // register
+    Route::post('/register','ApiHomeController@registerUser');
+    // login
+    Route::post('/login','ApiHomeController@loginUser');
+    // get user
+    Route::get('/user','ApiHomeController@getUserLogin');
+    // logout user
+    Route::get('/logout','ApiHomeController@logoutUser');
+});

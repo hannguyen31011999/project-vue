@@ -11,20 +11,25 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/index', function () {
     return view('frontend.master');
 });
 
 // login
 Route::get('/admin/login','backend\ViewController@viewLogin');
 
-Route::group(['middleware' => 'check.jwt','prefix'=>'admin'], function () {
+// admin
+Route::group(['middleware' => 'check.jwt','prefix'=>'admin','namespace'=>'backend'], function () {
     // dashboard
-    Route::get('/dashboard','backend\ViewController@viewDashBoard');
+    Route::get('/dashboard','ViewController@viewDashBoard');
     // Categories
-    Route::get('/categories','backend\ViewController@viewCategories');
+    Route::get('/categories','ViewController@viewCategories');
     // TypeProduct
-    Route::get('/type','backend\ViewController@viewTypeProduct');
+    Route::get('/type','ViewController@viewTypeProduct');
 });
 
-
+// user
+Route::group(['namespace'=>'frontend'],function(){
+    // index
+    Route::get('/','ViewFrontendController@viewIndex');
+});

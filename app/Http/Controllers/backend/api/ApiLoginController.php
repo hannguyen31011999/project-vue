@@ -45,7 +45,7 @@ class ApiLoginController extends Controller
             'token' => 'required'
         ]);
         try {
-            JWTAuth::invalidate($request->token);
+            JWTAuth::invalidate(JWTAuth::getToken());
             return response()->json([
                 'status' => true,
                 'message' => 'User logged out successfully'
