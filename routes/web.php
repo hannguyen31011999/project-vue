@@ -26,6 +26,14 @@ Route::group(['middleware' => 'check.jwt','prefix'=>'admin','namespace'=>'backen
     Route::get('/categories','ViewController@viewCategories');
     // TypeProduct
     Route::get('/type','ViewController@viewTypeProduct');
+    // User
+    Route::get('/user','ViewController@viewUser');
+    // Province
+    Route::get('/province','ViewController@viewProvince');
+    // District
+    Route::get('/district','ViewController@viewDistrict');
+    // Ward
+    Route::get('/province','ViewController@viewWard');
 });
 
 // user

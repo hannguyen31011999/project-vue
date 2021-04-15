@@ -12,6 +12,24 @@ export const seachCategoriesUrl = apiDomain + 'categories/seach?token=';
 export const createTypeUrl = apiDomain + 'type/create?token=';
 export const listTypeUrl = apiDomain + 'type/list?token=';
 export const seachTypeUrl = apiDomain + 'type/seach?token=';
+// user
+export const listUserUrl = apiDomain + 'user/list?token=';
+export const seachUserUrl = apiDomain + 'user/seach?token=';
+// province
+export const createProvinceUrl = apiDomain + 'province/create?token=';
+export const listProvinceUrl = apiDomain + 'province/list?token=';
+export const seachProvinceUrl = apiDomain + 'province/seach?token=';
+// district
+export const createDistrictUrl = apiDomain + 'district/create?token=';
+export const listDistrictUrl = apiDomain + 'district/list?token=';
+export const seachDistrictUrl = apiDomain + 'district/seach?token=';
+// ward
+export const createWardUrl = apiDomain + 'ward/create?token=';
+export const listWardUrl = apiDomain + 'ward/list?token=';
+export const seachWardUrl = apiDomain + 'ward/seach?token=';
+
+
+
 
 import VueCookies from 'vue-cookies';
 

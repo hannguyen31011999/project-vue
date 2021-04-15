@@ -28,4 +28,24 @@ class ViewController extends Controller
     {
         return view('backend.type_product.index_type');
     }
+
+    public function viewUser()
+    {
+        return view('backend.user.index_user');
+    }
+
+    public function viewProvince()
+    {
+        return view('backend.province.index_province');
+    }
+
+    public function viewDistrict()
+    {
+        return view('backend.district.index_district');
+    }
+
+    public function viewWard()
+    {
+        return view('backend.ward.index_ward');
+    }
 }

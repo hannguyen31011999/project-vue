@@ -29,78 +29,61 @@
           </li>
 
           <li>
-            <a href="javascript: void(0);" class="waves-effect">
-              <i class="ion-md-speedometer"></i>
-              <span> Forms </span>
-              <span class="badge badge-danger badge-pill float-right"> 8 </span>
+            <a href="" @click.prevent="redirectURL(4)" class="waves-effect">
+              <i class="fas fa-users"></i>
+              <span> Quản lý người dùng </span>
             </a>
-            <ul class="nav-second-level" aria-expanded="false">
-              <li><a href="forms-elements.html">General Elements</a></li>
-              <li><a href="forms-validation.html">Form Validation</a></li>
-              <li><a href="forms-advanced.html">Advanced Form</a></li>
-              <li><a href="forms-wizard.html">Form Wizard</a></li>
-              <li><a href="form-quilljs.html">Quilljs Editor</a></li>
-              <li><a href="forms-uploads.html">Multiple File Upload</a></li>
-              <li><a href="forms-image-crop.html">Image Crop</a></li>
-              <li><a href="forms-xeditable.html">X-Editable</a></li>
-            </ul>
           </li>
 
           <li>
             <a href="javascript: void(0);" class="waves-effect">
               <i class="ion-ios-list"></i>
-              <span> Tables </span>
+              <span>Quản lý địa điểm</span>
               <span class="menu-arrow"></span>
             </a>
             <ul class="nav-second-level" aria-expanded="false">
-              <li><a href="tables-basic.html">Basic Tables</a></li>
-              <li><a href="tables-datatable.html">Data Table</a></li>
-              <li><a href="tables-editable.html">Editable Table</a></li>
-              <li><a href="tables-responsive.html">Responsive Table</a></li>
+              <li><a href="" @click.prevent="redirectURL(5)">Tỉnh/TP</a></li>
+              <li><a href="" @click.prevent="redirectURL(6)">Quận/huyện</a></li>
+              <li><a href="" @click.prevent="redirectURL(7)">Phường/xã</a></li>
             </ul>
           </li>
 
           <li>
             <a href="javascript: void(0);" class="waves-effect">
-              <i class="ion-md-pie"></i>
-              <span> Charts </span>
+              <i class="fab fa-product-hunt"></i>
+              <span> Quản lý sản phẩm </span>
               <span class="menu-arrow"></span>
             </a>
             <ul class="nav-second-level" aria-expanded="false">
-              <li><a href="charts-morris.html">Morris Chart</a></li>
-              <li><a href="charts-chartjs.html">Chartjs</a></li>
-              <li><a href="charts-flot.html">Flot Chart</a></li>
-              <li><a href="charts-rickshaw.html">Rickshaw Chart</a></li>
-              <li><a href="charts-peity.html">Peity Chart</a></li>
-              <li><a href="charts-c3.html">C3 Chart</a></li>
-              <li><a href="charts-other.html">Other Chart</a></li>
+              <li><a href="">Tin đăng bán</a></li>
+              <li><a href="">Kho hình ảnh</a></li>
             </ul>
           </li>
 
+          <li>
+            <a href="javascript: void(0);" class="waves-effect">
+              <i class="fas fa-shopping-cart"></i>
+              <span> Quản lý hóa đơn </span>
+            </a>
+          </li>
+
+          <li>
+            <a href="javascript: void(0);" class="waves-effect">
+              <i class="fab fa-blogger"></i>
+              <span> Quản lý bài viết </span>
+            </a>
+          </li>
           <li>
             <a href="javascript: void(0);" class="waves-effect">
               <i class="ion-md-mail"></i>
               <span> Mail </span>
-              <span class="badge badge-warning badge-pill float-right">12</span>
             </a>
-            <ul class="nav-second-level" aria-expanded="false">
-              <li><a href="email-inbox.html">Inbox</a></li>
-              <li><a href="email-compose.html">Compose Mail</a></li>
-              <li><a href="email-read.html">View Mail</a></li>
-              <li><a href="email-templates.html">Email Templates</a></li>
-            </ul>
           </li>
-
           <li>
             <a href="javascript: void(0);" class="waves-effect">
-              <i class="ion-md-map"></i>
-              <span> Maps </span>
-              <span class="menu-arrow"></span>
+              <i class="mdi mdi-settings"></i>
+              <span> Setting </span>
             </a>
-            <ul class="nav-second-level" aria-expanded="false">
-              <li><a href="maps-gmap.html"> Google Map</a></li>
-              <li><a href="maps-vector.html"> Vector Map</a></li>
-            </ul>
           </li>
         </ul>
       </div>
@@ -135,6 +118,31 @@ export default {
         case 3:{
           window.location.href = '/admin/type'
           break;
+        }
+        case 4:{
+          window.location.href = '/admin/user'
+          break;
+        }
+        case 5:{
+          window.location.href = '/admin/province'
+          break;
+        }
+        case 6:{
+          window.location.href = '/admin/district'
+          break;
+        }
+        case 7:{
+          window.location.href = '/admin/ward'
+          break;
+        }
+        case 8:{
+
+        }
+        case 9:{
+          
+        }
+        case 10:{
+          
         }
         default:{
 

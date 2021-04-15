@@ -44,6 +44,44 @@ Route::group(['middleware' => 'auth.jwt','namespace'=>'backend\api','prefix'=>'a
         Route::delete('/delete/{id}','ApiTypeProductController@destroy');
         Route::get('/seach','ApiTypeProductController@seach');
     });
+
+    // user
+    Route::group(['prefix'=>'user'],function(){
+        Route::get('/list','ApiUserController@index');
+        Route::get('/edit/{id}','ApiUserController@edit');
+        Route::post('/update/{id}','ApiUserController@update');
+        Route::get('/seach','ApiUserController@seach');
+    });
+
+    // province
+    Route::group(['prefix'=>'province'],function(){
+        Route::get('/list','ApiProvinceController@index');
+        Route::post('/create','ApiProvinceController@store');
+        Route::get('/edit/{id}','ApiProvinceController@edit');
+        Route::post('/update/{id}','ApiProvinceController@update');
+        Route::delete('/delete/{id}','ApiProvinceController@destroy');
+        Route::get('/seach','ApiProvinceController@seach');
+    });
+
+    // district
+    Route::group(['prefix'=>'district'],function(){
+        Route::get('/list','ApiDistrictController@index');
+        Route::post('/create','ApiDistrictController@store');
+        Route::get('/edit/{id}','ApiDistrictController@edit');
+        Route::post('/update/{id}','ApiDistrictController@update');
+        Route::delete('/delete/{id}','ApiDistrictController@destroy');
+        Route::get('/seach','ApiDistrictController@seach');
+    });
+
+    // ward
+    Route::group(['prefix'=>'ward'],function(){
+        Route::get('/list','ApiWardController@index');
+        Route::post('/create','ApiWardController@store');
+        Route::get('/edit/{id}','ApiWardController@edit');
+        Route::post('/update/{id}','ApiWardController@update');
+        Route::delete('/delete/{id}','ApiWardController@destroy');
+        Route::get('/seach','ApiWardController@seach');
+    });
 });
 
 // api user
