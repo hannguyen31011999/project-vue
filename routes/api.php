@@ -61,6 +61,7 @@ Route::group(['middleware' => 'auth.jwt','namespace'=>'backend\api','prefix'=>'a
         Route::post('/update/{id}','ApiProvinceController@update');
         Route::delete('/delete/{id}','ApiProvinceController@destroy');
         Route::get('/seach','ApiProvinceController@seach');
+        Route::get('/view/{id}','ApiProvinceController@viewDistrict');
     });
 
     // district

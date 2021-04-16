@@ -84,7 +84,7 @@ class ApiProvinceController extends Controller
                 'status'=>true,
                 'data'=>$edit,
                 'errors'=>null
-            ],500);
+            ]);
         }catch(Exception $e){
             return response()->json([
                 'status'=>false,
@@ -174,6 +174,29 @@ class ApiProvinceController extends Controller
                             ->orWhere('province_name','like',$request->keyword.'%')
                             ->take(5)
                             ->get();
+            if(!empty($result)){
+                return response()->json([
+                    'status'=>true,
+                    'data'=>$result,
+                    'errors'=>null
+                ]);
+            }
+        }catch(Exception $e){
+            return response()->json([
+                'status'=>false,
+                'data'=>null,
+                'errors'=>null
+            ],500);
+        }
+    }
+
+    // 
+    public function viewDistrict(Request $request,$id)
+    {
+        try{
+            $result = Province::findOrFail($id)
+                                ->Districts()
+                                ->get();
             if(!empty($result)){
                 return response()->json([
                     'status'=>true,

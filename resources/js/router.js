@@ -61,7 +61,7 @@ export const routes = [
     },
     // ward
     {
-        name:'list_war',
+        name:'list_ward',
         path:'/admin/ward',
         component:ListWardComponent
     },

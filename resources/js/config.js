@@ -42,7 +42,7 @@ export const getTokenUser = function(){
 }
 
 export const getHeader = function(){
-    const token = localStorage.getItem('access_token');
+    const token = VueCookies.get('_token');
     const headers = {
         'Accept':'application/json',
         'Authorization':'Bearer ' + token,
