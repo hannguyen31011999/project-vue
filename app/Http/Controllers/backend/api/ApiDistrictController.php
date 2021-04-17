@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Model\District;
 use App\Model\Province;
+use App\Model\Ward;
 class ApiDistrictController extends Controller
 {
     /**
@@ -43,7 +44,7 @@ class ApiDistrictController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'province_id'=>'required',
-                'district_name'=>'required|unique:bds_district,district_name'
+                'district_name'=>'required|max:255|unique:bds_district,district_name'
             ],
             [
                 'province_id.required'=>'province is invalid',
@@ -117,7 +118,7 @@ class ApiDistrictController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'province_id'=>'required',
-                'district_name'=>'required|unique:bds_district,district_name'
+                'district_name'=>'required|max:255|unique:bds_district,district_name'
             ],
             [
                 'province_id.required'=>'province is invalid',
@@ -178,9 +179,9 @@ class ApiDistrictController extends Controller
     {
         try{
             $result = DB::table('bds_district')
-                        ->join('bds_province','bds_district.province_id','=','bds_province.id')
-                        ->select('bds_district.*','bds_province.*')
-                        ->where('bds_district.id','=',$request->keyword)
+                        ->leftJoin('bds_province','bds_district.province_id','=','bds_province.id')
+                        ->select('bds_district.*','bds_province.province_name')
+                        ->where('bds_district.id','like',$request->keyword)
                         ->orWhere('bds_district.district_name','like',$request->keyword.'%')
                         ->orWhere('bds_province.province_name','like','%'.$request->keyword)
                         ->orderBy('bds_district.district_name')
@@ -193,6 +194,25 @@ class ApiDistrictController extends Controller
             ]);
         }catch(Exception $e){
 
+        }
+    }
+
+    // http://localhost:8000/api/admin/district/view/1
+    public function viewListWard($id)
+    {
+        try{
+            $data = District::findOrFail($id)->Wards()->get();
+            return response()->json([
+                'status'=>true,
+                'data'=>$data,
+                'errors'=>null
+            ]);
+        }catch(Exception $e){
+            return response()->json([
+                'status'=>true,
+                'data'=>null,
+                'errors'=>null
+            ],500);
         }
     }
 }

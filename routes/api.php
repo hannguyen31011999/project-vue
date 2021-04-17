@@ -72,11 +72,13 @@ Route::group(['middleware' => 'auth.jwt','namespace'=>'backend\api','prefix'=>'a
         Route::post('/update/{id}','ApiDistrictController@update');
         Route::delete('/delete/{id}','ApiDistrictController@destroy');
         Route::get('/seach','ApiDistrictController@seach');
+        Route::get('/view/{id}','ApiDistrictController@viewListWard');
     });
 
     // ward
     Route::group(['prefix'=>'ward'],function(){
         Route::get('/list','ApiWardController@index');
+        Route::get('/change/district/{id}','ApiWardController@changeDistrict');
         Route::post('/create','ApiWardController@store');
         Route::get('/edit/{id}','ApiWardController@edit');
         Route::post('/update/{id}','ApiWardController@update');

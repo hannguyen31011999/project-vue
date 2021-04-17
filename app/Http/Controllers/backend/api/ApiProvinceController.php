@@ -36,7 +36,7 @@ class ApiProvinceController extends Controller
     {
         $validator = Validator::make($request->all(),
             [
-                'province_name'=>'required|unique:bds_province,province_name'
+                'province_name'=>'required|max:255|unique:bds_province,province_name'
             ],
             [
                 'province_name.required'=>'province is valid',
@@ -107,7 +107,7 @@ class ApiProvinceController extends Controller
     {
         $validator = Validator::make($request->all(),
             [
-                'province_name'=>'required|unique:bds_province,province_name'
+                'province_name'=>'required|max:255|unique:bds_province,province_name'
             ],
             [
                 'province_name.required'=>'province is valid',

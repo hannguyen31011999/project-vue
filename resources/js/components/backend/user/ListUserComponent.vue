@@ -86,20 +86,23 @@
                           :key="index"
                         >
                           <a
-                            class="page-link"
-                            v-if="pagination.current_page === page"
-                            style="background-color: #dcdcdc"
-                            href=""
-                            @click.prevent="changePage(page)"
-                            >{{ page }}</a
-                          >
-                          <a
-                            class="page-link"
-                            v-else
-                            href=""
-                            @click.prevent="changePage(page)"
-                            >{{ page }}</a
-                          >
+                          class="page-link"
+                          v-if="pagination.current_page === page"
+                          style="background-color: #dcdcdc"
+                          :id="page"
+                          href=""
+                          @click.prevent="changePage(page)"
+                          >{{ page }}</a
+                        >
+                        <a
+                          class="page-link"
+                          v-if="page < pagination.current_page + 3 && page !== pagination.current_page"
+                          :id="page"
+                          href=""
+                          
+                          @click.prevent="changePage(page)"
+                          >{{ page }}</a
+                        >
                         </li>
                         <li id="last" class="page-item">
                           <a
@@ -303,6 +306,7 @@ export default {
     },
     changePage(page) {
       if (page === 0) {
+        $('#'+this.pagination.current_page).css('display','none');
         page += this.pagination.current_page + 1;
         if (this.pagination.last_page <= page) {
           $("#last").addClass("disabled");
@@ -312,12 +316,20 @@ export default {
         this.getData(page);
       } else if (page === -1) {
         page = this.pagination.current_page - 1;
+        $('#'+ page).css('display','block');
+        $('#'+ (page-1)).css('display','block');
+        $('#'+ (page-2)).css('display','block');
         if (page < 2) {
           $("#first").addClass("disabled");
           this.getData(page);
         }
         this.getData(page);
       } else if (page > 1) {
+        if(page>3){
+            for(let i = page -1;i > 0;i--){
+                $('#'+i).css('display','none');
+            }
+        }
         $("#first").removeClass("disabled");
         this.getData(page);
         if (page == this.pagination.last_page) {

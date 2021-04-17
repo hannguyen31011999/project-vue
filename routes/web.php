@@ -33,7 +33,7 @@ Route::group(['middleware' => 'check.jwt','prefix'=>'admin','namespace'=>'backen
     // District
     Route::get('/district','ViewController@viewDistrict');
     // Ward
-    Route::get('/province','ViewController@viewWard');
+    Route::get('/ward','ViewController@viewWard');
 });
 
 // user

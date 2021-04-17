@@ -45,7 +45,7 @@
                   >
                     <thead>
                       <tr>
-                        <th>ID</th>
+                        <th>STT</th>
                         <th>Province_name</th>
                         <th>District_name</th>
                         <th>Action</th>
@@ -60,8 +60,9 @@
                         <td>
                           <button
                             data-toggle="modal"
-                            data-target="#viewDistrict"
+                            data-target="#viewWard"
                             class="btn btn-icon waves-effect waves-light btn-primary"
+                            @click.prevent="viewWard(item.id)"
                           >
                             <i class="fas fa-eye"></i>
                           </button>
@@ -106,14 +107,17 @@
                           class="page-link"
                           v-if="pagination.current_page === page"
                           style="background-color: #dcdcdc"
+                          :id="page"
                           href=""
                           @click.prevent="changePage(page)"
                           >{{ page }}</a
                         >
                         <a
                           class="page-link"
-                          v-else
+                          v-if="page < pagination.current_page + 3 && page !== pagination.current_page"
+                          :id="page"
                           href=""
+                          
                           @click.prevent="changePage(page)"
                           >{{ page }}</a
                         >
@@ -166,8 +170,9 @@
                 <div class="col-12">
                   <div class="form-group">
                         <label for="categories">Province</label>
-                        <select v-model="form.province_id" class="form-control">
-                            <option v-for="(item,index) in province" :key="index" v-bind:value="item.id">
+                        <select id="" value="" v-model="form.province_id" class="form-control">
+                            <option selected>Choose province</option>
+                            <option v-for="(item,index) in province" :key="index" :value="item.id">
                                 {{ item.province_name }}
                             </option>
                         </select>
@@ -275,6 +280,52 @@
       <!-- /.modal-dialog -->
     </div>
     <!-- end modal edit -->
+    <!-- modal view -->
+    <div
+      id="viewWard"
+      class="modal fade"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+      style="display: none"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="myModalLabel">List Ward</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-hidden="true"
+            >
+              ×
+            </button>
+          </div>
+          <div class="modal-body">
+            <table
+              id="datatable"
+              class="table table-bordered dt-responsive nowrap"
+              style="border-collapse: collapse;border-spacing: 0;width: 100%;">
+              <thead>
+                <th>ID</th>
+                <th>Ward_name</th>
+              </thead>
+              <tbody>
+                <tr v-for="(item,index) in ward" :key="index">
+                  <td>{{item.id}}</td>
+                  <td>{{item.ward_name}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- end modal view -->
   </div>
 </template>
 
@@ -285,14 +336,13 @@ import {
   listDistrictUrl,
   seachDistrictUrl,
   getToken,
-  listProvinceUrl,
-  getHeader
 } from "../../../config";
 export default {
   data() {
     return {
       district: [],
       province: [],
+      ward:[],
       form: {
       },
       pagination: {},
@@ -394,6 +444,7 @@ export default {
                     for(let i = 0;i<res.data.data.length;i++)
                     {
                         this.district.push(res.data.data[i]);
+                        console.log(res.data.data[i])
                     }
                     this.pagination = {};
                 }
@@ -406,10 +457,22 @@ export default {
         }
     },
     viewWard(id){
-
+      axios.get(apiDomain + 'district/view/'+id+'?token='+getToken())
+      .then(res =>{
+        if(res.data.status===true){
+          this.ward = res.data.data;
+        }
+      })
+      .catch(e => {
+        if(e.status === 500)
+        {
+          alert('Server errors 500')
+        }
+      })
     },
     changePage(page) {
         if (page === 0) {
+            $('#'+this.pagination.current_page).css('display','none');
             page += this.pagination.current_page + 1;
             if (this.pagination.last_page <= page) {
             $("#last").addClass("disabled");
@@ -419,12 +482,20 @@ export default {
             this.getData(page);
         } else if (page === -1) {
             page = this.pagination.current_page - 1;
+            $('#'+ page).css('display','block');
+            $('#'+ (page-1)).css('display','block');
+            $('#'+ (page-2)).css('display','block');
             if (page < 2) {
             $("#first").addClass("disabled");
             this.getData(page);
             }
             this.getData(page);
         } else if (page > 1) {
+            if(page>3){
+              for(let i = page -1;i > 0;i--){
+                  $('#'+i).css('display','none');
+              }
+            }
             $("#first").removeClass("disabled");
             this.getData(page);
             if (page == this.pagination.last_page) {
