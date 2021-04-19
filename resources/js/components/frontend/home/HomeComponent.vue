@@ -206,18 +206,19 @@
         <div class="row d-flex">
           <div class="col-md-3 d-flex ftco-animate" v-for="(item,index) in post" :key="index">
             <div class="blog-entry align-self-stretch">
-              <a
-                href="#"
-                class="block-20"
-                v-bind:style="{ 'background-image': 'url(' + '/assets/image_post/' + item.image + ')' }"
-              >
-              </a>
+                <a
+                  href=""
+                  @click.prevent="redirectDetailPost(item.url)"
+                  class="block-20"
+                  :style="{ 'background-image': 'url(' + '/assets/image_post/' + item.image + ')' }"
+                >
+                </a>
               <div class="text mt-3 d-block">
                 <div class="meta mb-3">
                   <div>{{ convertDate(item.created_at) }} ngày trước</div>
                 </div>
                 <h3 class="heading mt-3">
-                  <a href="#">{{ hideTitle(item.title) }}</a>
+                    <a href="" @click.prevent="redirectDetailPost(item.url)">{{ item.title }}</a>
                 </h3>
               </div>
             </div>
@@ -504,6 +505,7 @@ export default {
       axios.get(apiDomainUser + 'post')
       .then(res => {
         if(res.data.status===true){
+          localStorage.setItem('post',res.data.data);
           this.post = res.data.data;
         }
       })
@@ -516,25 +518,18 @@ export default {
       let dateParams = new Date(date);
       return (timePresent.getDay() - dateParams.getDay()==0) ? 1 :timePresent.getDay() - dateParams.getDay();
     },
-    hideTitle(string){
-      let str = '';
-      for(let i = 0;i < string.length;i++){
-        if(i>99){
-          if(i===103){
-            break;
-          }
-          str +='.';
-        }
-        str += string[i];
-      }
-      return str;
+    redirectDetailPost(url){
+      localStorage.setItem('urlDetailPost',url);
+      window.location.href = '/bai-viet/' + url;
     }
   },
   created(){
+    if(localStorage.getItem('post')!==null){
+      this.post = localStorage.getItem('post');
+    }
     this.getListPost();
   },
   mounted() {
-    
   },
 };
 </script>

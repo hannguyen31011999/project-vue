@@ -12,9 +12,9 @@ import NavbarFeComponent from './components/frontend/NavbarFeComponent.vue';
 import FooterComponent from './components/frontend/FooterComponent.vue';
 import ModalRegisterComponent from './components/frontend/modal/ModalRegisterComponent.vue';
 import ModalLoginComponent from './components/frontend/modal/ModalLoginComponent.vue';
-
 import {routes} from './router.js';
 import VueCookies from 'vue-cookies';
+import Vue from 'vue';
 
 
 Vue.component('navbarComponent',NavbarComponent);
@@ -23,8 +23,6 @@ Vue.component('navbarHome',NavbarFeComponent);
 Vue.component('footerHome', FooterComponent);
 Vue.component('registerComponent', ModalRegisterComponent);
 Vue.component('loginComponent', ModalLoginComponent);
-
-
 
 Vue.use(VueRouter);
 

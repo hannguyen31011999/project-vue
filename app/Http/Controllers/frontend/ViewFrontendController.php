@@ -13,4 +13,9 @@ class ViewFrontendController extends Controller
     {
         return view($this->module.'.home.index_home');
     }
+
+    public function viewPostDetail()
+    {
+        return view($this->module.'.post.detail_post');
+    }
 }

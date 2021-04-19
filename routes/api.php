@@ -103,6 +103,8 @@ Route::group(['namespace'=>'frontend\api'],function(){
     Route::get('/categories','ApiHomeController@getListCategories');
     // post
     Route::get('/post','ApiHomeController@getListPost');
+    // post detail
+    Route::get('/post/detail/{url}','ApiPostController@getPostDetail');
     // register
     Route::post('/register','ApiHomeController@registerUser');
     // login

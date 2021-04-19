@@ -42,4 +42,6 @@ Route::group(['middleware' => 'check.jwt','prefix'=>'admin','namespace'=>'backen
 Route::group(['namespace'=>'frontend'],function(){
     // index
     Route::get('/','ViewFrontendController@viewIndex');
+    // post detail
+    Route::get('/bai-viet/{url}','ViewFrontendController@viewPostDetail');
 });

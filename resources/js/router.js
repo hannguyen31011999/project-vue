@@ -20,6 +20,7 @@ import ListPostComponent from './components/backend/post/ListPostComponent.vue';
 
 // USER
 import HomeComponent from './components/frontend/home/HomeComponent.vue';
+import DetailPostComponent from './components/frontend/post/DetailPostComponent.vue';
 export const routes = [
     // ADMIN
     {
@@ -76,9 +77,16 @@ export const routes = [
     },
 
     // USER
+    // home
     {
         name:'home',
         path:'/',
         component:HomeComponent
+    },
+    // post
+    {
+        name:'detailPost',
+        path:'/bai-viet/:url',
+        component:DetailPostComponent
     }
 ]
