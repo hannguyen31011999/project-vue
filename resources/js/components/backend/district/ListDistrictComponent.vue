@@ -402,10 +402,10 @@ export default {
             this.errors = {};
             if(res.data.status === true)
             {
-                let index = this.district.findIndex((item) => item.id===id);
-                res.data.data.district.provinces = res.data.data.province[0];
-                this.district[index] = res.data.data.district;
-                $('#editDistrict').modal('hide');
+              let index = this.district.findIndex((item) => item.id===id);
+              res.data.data.district.provinces = res.data.data.province[0];
+              this.district[index] = res.data.data.district;
+              $('#editDistrict').modal('hide');
             }else{
               for(const [key,value] of Object.entries(res.data.errors))
               {

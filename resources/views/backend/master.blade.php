@@ -51,8 +51,8 @@
 
     <!-- App js -->
     <script src="{{ asset('/assets/js/app.min.js') }}"></script>
-
-
+    <script src="{{asset('/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{asset('/ckfinder/ckfinder.js') }}"></script>
     @yield('js')
 </body>
 </html>

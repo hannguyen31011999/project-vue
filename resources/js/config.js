@@ -27,7 +27,10 @@ export const seachDistrictUrl = apiDomain + 'district/seach?token=';
 export const createWardUrl = apiDomain + 'ward/create?token=';
 export const listWardUrl = apiDomain + 'ward/list?token=';
 export const seachWardUrl = apiDomain + 'ward/seach?token=';
-
+// post
+export const createPostUrl = apiDomain + 'post/create?token=';
+export const listPostUrl = apiDomain + 'post/list?token=';
+export const seachPostUrl = apiDomain + 'post/seach?token=';
 
 
 
@@ -35,6 +38,10 @@ import VueCookies from 'vue-cookies';
 
 export const getToken = function(){
     return VueCookies.get('_token');
+}
+
+export const removeToken = function(){
+    VueCookies.remove('_token');
 }
 
 export const getTokenUser = function(){

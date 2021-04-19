@@ -15,6 +15,9 @@ import ListProvinceComponent from './components/backend/province/ListProvinceCom
 import ListDistrictComponent from './components/backend/district/ListDistrictComponent.vue'
 // ward
 import ListWardComponent from './components/backend/ward/ListWardComponent.vue';
+// post
+import ListPostComponent from './components/backend/post/ListPostComponent.vue';
+
 // USER
 import HomeComponent from './components/frontend/home/HomeComponent.vue';
 export const routes = [
@@ -65,7 +68,12 @@ export const routes = [
         path:'/admin/ward',
         component:ListWardComponent
     },
-
+    // post
+    {
+        name:'list_post',
+        path:'/admin/post',
+        component:ListPostComponent
+    },
 
     // USER
     {

@@ -46,6 +46,7 @@ class ApiLoginController extends Controller
         ]);
         try {
             JWTAuth::invalidate(JWTAuth::getToken());
+            setcookie('_token', false);
             return response()->json([
                 'status' => true,
                 'message' => 'User logged out successfully'

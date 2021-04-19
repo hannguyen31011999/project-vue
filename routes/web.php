@@ -34,6 +34,8 @@ Route::group(['middleware' => 'check.jwt','prefix'=>'admin','namespace'=>'backen
     Route::get('/district','ViewController@viewDistrict');
     // Ward
     Route::get('/ward','ViewController@viewWard');
+    // Post
+    Route::get('/post','ViewController@viewPost');
 });
 
 // user

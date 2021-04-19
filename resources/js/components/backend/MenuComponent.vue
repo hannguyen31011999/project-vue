@@ -68,7 +68,7 @@
           </li>
 
           <li>
-            <a href="javascript: void(0);" class="waves-effect">
+            <a href="javascript: void(0);" @click.prevent="redirectURL(8)" class="waves-effect">
               <i class="fab fa-blogger"></i>
               <span> Quản lý bài viết </span>
             </a>
@@ -136,7 +136,8 @@ export default {
           break;
         }
         case 8:{
-
+          window.location.href = '/admin/post'
+          break;
         }
         case 9:{
           

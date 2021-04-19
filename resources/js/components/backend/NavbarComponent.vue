@@ -288,7 +288,7 @@
 </template>
 
 <script>
-import {getUserUrl,logoutUrl,getToken} from '../../config';
+import {getUserUrl,logoutUrl,getToken,removeToken} from '../../config';
 export default {
     data(){
         return{
@@ -302,6 +302,7 @@ export default {
             axios.get(logoutUrl + getToken())
             .then(res => {
                 if(res.data.status===true){
+                    removeToken();
                     window.location.href = "login";
                 }
             })

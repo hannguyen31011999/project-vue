@@ -9,15 +9,39 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Facades\DB;
 use App\Model\Categories;
 use App\Model\User;
+use App\Model\Post;
+use Carbon\Carbon;
 class ApiHomeController extends Controller
 {
-    public function getCategories()
+    public function getListCategories()
     {
         $categories = Categories::all();
         return response()->json([
             'data'=>$categories,
+            'status'=>true,
+            'errors'=>null,
+        ]);
+    }
+
+
+    public function getListPost()
+    {
+        // $post = DB::table('bds_post')
+        //             ->leftJoin('bds_user','bds_post.user_id','=','bds_user.id')
+        //             ->select('bds_post.id','bds_post.title','bds_post.image','bds_post.url','bds_post.created_at','bds_user.fullname')
+        //             ->whereMonth('bds_post.created_at',Carbon::now()->month)
+        //             ->orderBy('bds_post.created_at','desc')
+        //             ->take(4)
+        //             ->get();
+        $post = Post::whereMonth('created_at',Carbon::now()->month)
+                    ->orderBy('created_at','desc')
+                    ->take(4)
+                    ->get(['id','title','image','url','created_at']);
+        return response()->json([
+            'data'=>$post,
             'status'=>true,
             'errors'=>null,
         ]);

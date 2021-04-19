@@ -48,4 +48,9 @@ class ViewController extends Controller
     {
         return view('backend.ward.index_ward');
     }
+
+    public function viewPost()
+    {
+        return view('backend.post.index_post');
+    }
 }

@@ -85,12 +85,24 @@ Route::group(['middleware' => 'auth.jwt','namespace'=>'backend\api','prefix'=>'a
         Route::delete('/delete/{id}','ApiWardController@destroy');
         Route::get('/seach','ApiWardController@seach');
     });
+
+    // post
+    Route::group(['prefix'=>'post'],function(){
+        Route::get('/list','ApiPostController@index');
+        Route::post('/create','ApiPostController@store');
+        Route::get('/edit/{id}','ApiPostController@edit');
+        Route::post('/update/{id}','ApiPostController@update');
+        Route::delete('/delete/{id}','ApiPostController@destroy');
+        Route::get('/seach','ApiPostController@seach');
+    });
 });
 
 // api user
 Route::group(['namespace'=>'frontend\api'],function(){
     // categories
-    Route::get('/categories','ApiHomeController@getCategories');
+    Route::get('/categories','ApiHomeController@getListCategories');
+    // post
+    Route::get('/post','ApiHomeController@getListPost');
     // register
     Route::post('/register','ApiHomeController@registerUser');
     // login
