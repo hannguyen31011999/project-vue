@@ -71,10 +71,8 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <select name="" id="" class="form-control">
-                      <option value="">Loại nhà đất</option>
-                      <option value="">Loại nhà đất</option>
-                      <option value="">Loại nhà đất</option>
-                      <option value="">Loại nhà đất</option>
+                      <option value="" selected>Loại nhà đất</option>
+                      <option v-for="(item,index) in categories" :key="index" :value="item.id">{{ item.categories_name }}</option>
                     </select>
                   </div>
                 </div>
@@ -96,31 +94,25 @@
               <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">
-                    <select name="" id="" class="form-control">
-                      <option value="">Trên toàn quốc</option>
-                      <option value="">Loại nhà đất</option>
-                      <option value="">Loại nhà đất</option>
-                      <option value="">Loại nhà đất</option>
+                    <select name="" id="" class="form-control" v-model="seach.province" @change="changeProvince()">
+                      <option value="0">Trên toàn quốc</option>
+                      <option v-for="(item,index) in province" :key="index" :value="item.id">{{ item.province_name }}</option>
                     </select>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <select name="" id="" class="form-control">
-                      <option value="">Quận/huyện</option>
-                      <option value="">Loại nhà đất</option>
-                      <option value="">Loại nhà đất</option>
-                      <option value="">Loại nhà đất</option>
+                    <select name="" id="" class="form-control" v-model="seach.district" @change="changeDistrict()">
+                      <option value="0">Quận/huyện</option>
+                      <option v-for="(item,index) in district" :key="index" :value="item.id">{{ item.district_name }}</option>
                     </select>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <select name="" id="" class="form-control">
-                      <option value="">Phường/xã</option>
-                      <option value="">Loại nhà đất</option>
-                      <option value="">Loại nhà đất</option>
-                      <option value="">Loại nhà đất</option>
+                    <select name="" id="" class="form-control" v-model="seach.ward">
+                      <option value="0">Phường/xã</option>
+                      <option v-for="(item,index) in ward" :key="index" :value="item.id">{{ item.ward_name }}</option>
                     </select>
                   </div>
                 </div>
@@ -497,7 +489,16 @@ export default {
     return{
       post:[],
       product:[],
-      keyword:{}
+      type:[],
+      categories:[],
+      province:[],
+      district:[],
+      ward:[],
+      seach:{
+        province:'0',
+        district:'0',
+        ward:'0'
+      },
     }
   },
   methods:{
@@ -505,13 +506,51 @@ export default {
       axios.get(apiDomainUser + 'post')
       .then(res => {
         if(res.data.status===true){
-          localStorage.setItem('post',res.data.data);
           this.post = res.data.data;
+          localStorage.setItem('postHome',res.data.data);
         }
       })
       .catch(e => {
 
       })
+    },
+    getListCategories(){
+      axios.get(apiDomainUser + 'categories')
+      .then((res) => {
+        this.categories = res.data.data;
+      })
+      .catch((e) => {
+
+      })
+    },
+    getListProvince(){
+      axios.get(apiDomainUser + 'province/list')
+      .then((res) => {
+        this.province = res.data.data;
+      })
+      .catch((e) => {
+
+      })
+    },
+    changeProvince(){
+      if(this.seach.province !== '0'){
+        let index = this.province.findIndex((item) => this.seach.province === item.id);
+        this.district = this.province[index].districts;
+      }else{
+        this.district = [];
+      }
+    },
+    changeDistrict(){
+      if(this.seach.district !== '0'){
+        let index = this.province.findIndex((item) => this.seach.province === item.id);
+        this.province[index].wards.map((item,index) => {
+          if(item.district_id===this.seach.district){
+            this.ward.push(item);
+          }
+        })
+      }else{
+        this.ward = [];
+      }
     },
     convertDate(date){
       let timePresent = new Date();
@@ -523,13 +562,19 @@ export default {
       window.location.href = '/bai-viet/' + url;
     }
   },
+  beforeCreate() {
+    
+  },
   created(){
-    if(localStorage.getItem('post')!==null){
-      this.post = localStorage.getItem('post');
+    if(localStorage.getItem('postHome')!==null){
+      this.post = localStorage.getItem('postHome');
     }
     this.getListPost();
+    this.getListCategories();
+    this.getListProvince();
   },
   mounted() {
+
   },
 };
 </script>

@@ -101,16 +101,28 @@ Route::group(['middleware' => 'auth.jwt','namespace'=>'backend\api','prefix'=>'a
 Route::group(['namespace'=>'frontend\api'],function(){
     // categories
     Route::get('/categories','ApiHomeController@getListCategories');
+
+    // province list
+    Route::get('/province/list','ApiHomeController@getListProvince');
+
     // post
     Route::get('/post','ApiHomeController@getListPost');
+
+    // list post
+    Route::get('/post/list','ApiPostController@index');
+
     // post detail
     Route::get('/post/detail/{url}','ApiPostController@getPostDetail');
+
     // register
     Route::post('/register','ApiHomeController@registerUser');
+
     // login
     Route::post('/login','ApiHomeController@loginUser');
+
     // get user
     Route::get('/user','ApiHomeController@getUserLogin');
+    
     // logout user
     Route::get('/logout','ApiHomeController@logoutUser');
 });

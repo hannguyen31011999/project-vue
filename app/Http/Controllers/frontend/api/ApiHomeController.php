@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\DB;
 use App\Model\Categories;
 use App\Model\User;
 use App\Model\Post;
+use App\Model\Province;
+use App\Model\District;
+use App\Model\Ward;
 use Carbon\Carbon;
 class ApiHomeController extends Controller
 {
@@ -44,6 +47,17 @@ class ApiHomeController extends Controller
             'data'=>$post,
             'status'=>true,
             'errors'=>null,
+        ]);
+    }
+
+    // 
+    public function getListProvince()
+    {
+        $province = Province::with(['Districts','Wards'])->get();
+        return response()->json([
+            'status'=>true,
+            'data'=>$province,
+            'errors'=>null
         ]);
     }
 

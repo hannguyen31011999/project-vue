@@ -44,4 +44,8 @@ Route::group(['namespace'=>'frontend'],function(){
     Route::get('/','ViewFrontendController@viewIndex');
     // post detail
     Route::get('/bai-viet/{url}','ViewFrontendController@viewPostDetail');
+    // post
+    Route::get('/bai-viet','ViewFrontendController@viewPost');
+    // create product
+    Route::get('/dang-tin-rao-ban','ViewFrontendController@viewCreateProduct');
 });

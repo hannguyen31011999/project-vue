@@ -21,6 +21,8 @@ import ListPostComponent from './components/backend/post/ListPostComponent.vue';
 // USER
 import HomeComponent from './components/frontend/home/HomeComponent.vue';
 import DetailPostComponent from './components/frontend/post/DetailPostComponent.vue';
+import PostComponent from './components/frontend/post/PostComponent.vue';
+import CreateProductComponent from './components/frontend/product/CreateProductComponent.vue';
 export const routes = [
     // ADMIN
     {
@@ -83,10 +85,22 @@ export const routes = [
         path:'/',
         component:HomeComponent
     },
-    // post
+    // post detail
     {
         name:'detailPost',
         path:'/bai-viet/:url',
         component:DetailPostComponent
+    },
+    // post list
+    {
+        name:'listPost',
+        path:'/bai-viet',
+        component:PostComponent
+    },
+    // create product
+    {
+        name:'createProduct',
+        path:'/dang-tin-rao-ban',
+        component:CreateProductComponent
     }
 ]

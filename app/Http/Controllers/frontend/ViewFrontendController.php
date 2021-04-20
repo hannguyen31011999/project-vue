@@ -18,4 +18,14 @@ class ViewFrontendController extends Controller
     {
         return view($this->module.'.post.detail_post');
     }
+
+    public function viewPost()
+    {
+        return view($this->module.'.post.list_post');
+    }
+
+    public function viewCreateProduct()
+    {
+        return view($this->module.'.product.create_product');
+    }
 }

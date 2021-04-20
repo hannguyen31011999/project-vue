@@ -94,7 +94,6 @@ export default {
       post:{},
       postRelation:[],
       url:localStorage.getItem('urlDetailPost'),
-
     }
   },
   methods:{

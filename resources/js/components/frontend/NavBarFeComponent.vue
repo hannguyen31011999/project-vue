@@ -22,7 +22,7 @@
       id="ftco-navbar"
     >
       <div class="container">
-        <a class="navbar-brand" href="#">Bất Động Sản<span> Quận 9</span></a>
+        <a class="navbar-brand" href="/">Bất Động Sản<span> Quận 9</span></a>
         <button
           class="navbar-toggler"
           type="button"
@@ -55,7 +55,7 @@
                 :key="index" href="#" >{{item.categories_name}}</a>
               </div>
             </li>
-            <li class="nav-item"><a href="#" class="nav-link">Tin tức</a></li>
+            <li class="nav-item"><a href="/bai-viet" class="nav-link">Tin tức</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Liên hệ</a></li>
             <li class="nav-item dropdown">
               <a 
@@ -84,8 +84,7 @@
               </a>
             </li>
             <li class="nav-item cta cta-colored">
-              <a href="#" class="nav-link">Đăng tin</a
-              >
+              <a href="/dang-tin-rao-ban" class="nav-link">Đăng tin</a>
             </li>
           </ul>
         </div>

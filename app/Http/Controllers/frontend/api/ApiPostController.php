@@ -14,9 +14,20 @@ class ApiPostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    // http://localhost:8000/api/post/list
     public function index()
     {
-        //
+        $list = DB::table('bds_post')
+                    ->leftJoin('bds_user','bds_post.user_id','=','bds_user.id')
+                    ->select('bds_post.url','bds_post.title','bds_post.created_at','bds_post.image','bds_user.fullname')
+                    ->orderBy('bds_post.created_at','desc')
+                    ->paginate(8);
+        return response()->json([
+            'status'=>true,
+            'data'=>$list,
+            'errors'=>null
+        ]);
     }
 
     // http://localhost:8000/api/post/detail/bong-tay-voi-gia-nha-lien-tho
