@@ -120,14 +120,15 @@ export default {
     getUser(token){
       axios.get(apiDomainUser + 'user?token='+token)
       .then((res) => {
-        this.user = res.data.data;
+        if(res.data.status){
+          this.user = res.data.data;
+        }
       })
       .catch((e) => {
 
       })
     },
     logoutUser(){
-      console.log(apiDomainUser + 'logout?token=' + getTokenUser())
       axios.get(apiDomainUser + 'logout?token=' + getTokenUser())
       .then((res) => {
         if(res.data.status===true)

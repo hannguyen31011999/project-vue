@@ -6418,11 +6418,12 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get(_config__WEBPACK_IMPORTED_MODULE_0__["apiDomainUser"] + 'user?token=' + token).then(function (res) {
-        _this2.user = res.data.data;
+        if (res.data.status) {
+          _this2.user = res.data.data;
+        }
       })["catch"](function (e) {});
     },
     logoutUser: function logoutUser() {
-      console.log(_config__WEBPACK_IMPORTED_MODULE_0__["apiDomainUser"] + 'logout?token=' + Object(_config__WEBPACK_IMPORTED_MODULE_0__["getTokenUser"])());
       axios.get(_config__WEBPACK_IMPORTED_MODULE_0__["apiDomainUser"] + 'logout?token=' + Object(_config__WEBPACK_IMPORTED_MODULE_0__["getTokenUser"])()).then(function (res) {
         if (res.data.status === true) {
           localStorage.removeItem('bearer_token');
@@ -7759,6 +7760,21 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../config */ "./resources/js/config.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -8082,7 +8098,264 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    var _form;
+
+    return {
+      type: [],
+      province: [],
+      categories: [],
+      district: [],
+      ward: [],
+      user: {
+        'fullname': '',
+        'email': '',
+        'phone': '',
+        'address': ''
+      },
+      form: (_form = {
+        type_id: '',
+        categories_id: '',
+        province_id: '',
+        district_id: '',
+        ward_id: '',
+        title: '',
+        area: null,
+        price: null,
+        address: '',
+        date_start: '',
+        date_end: '',
+        desc: '',
+        facade: '',
+        access_road: '',
+        direction: '',
+        num_floor: '',
+        num_bedroom: '',
+        furniture: '',
+        juridical: '',
+        user_id: '',
+        fullname: ''
+      }, _defineProperty(_form, "address", ''), _defineProperty(_form, "phone", ''), _defineProperty(_form, "email", ''), _defineProperty(_form, "image", []), _defineProperty(_form, "street", ''), _form),
+      hinhThucBan: '',
+      totalPrice: 0,
+      countChar: 3000,
+      totalTypePrice: 0,
+      limitImage: '',
+      errors: {},
+      loader: '',
+      message: ''
+    };
+  },
+  methods: {
+    getList: function getList() {
+      var _this = this;
+
+      axios.get(_config__WEBPACK_IMPORTED_MODULE_0__["apiDomainUser"] + 'product').then(function (res) {
+        if (res.data.status) {
+          _this.province = res.data.data.province;
+          _this.type = res.data.data.type;
+          _this.categories = res.data.data.categories;
+        }
+      })["catch"](function (e) {});
+    },
+    onchangeProvince: function onchangeProvince() {
+      var _this2 = this;
+
+      this.district = [];
+      var index = this.province.findIndex(function (item) {
+        return item.id === _this2.form.province_id;
+      });
+      this.district = this.province[index].districts;
+    },
+    onchangeDistrict: function onchangeDistrict() {
+      var _this3 = this;
+
+      this.ward = [];
+      var index = this.province.findIndex(function (item) {
+        return _this3.form.province_id === item.id;
+      });
+      this.province[index].wards.map(function (item, index) {
+        if (item.district_id === _this3.form.district_id) {
+          _this3.ward.push(item);
+        }
+      });
+    },
+    onchangeWard: function onchangeWard() {
+      var _this4 = this;
+
+      if (this.form.ward_id !== '0') {
+        var province = this.province.filter(function (item) {
+          return item.id === _this4.form.province_id;
+        })[0].province_name;
+        var district = this.district.filter(function (item) {
+          return item.id === _this4.form.district_id;
+        })[0].district_name;
+        var ward = this.ward.filter(function (item) {
+          return item.id === _this4.form.ward_id;
+        })[0].ward_name;
+        this.form.address = this.form.street + ', ' + ward + ', ' + district + ', ' + province;
+      }
+    },
+    onchangeStreet: function onchangeStreet() {
+      var _this5 = this;
+
+      var province = this.province.filter(function (item) {
+        return item.id === _this5.form.province_id;
+      })[0].province_name;
+      var district = this.district.filter(function (item) {
+        return item.id === _this5.form.district_id;
+      })[0].district_name;
+      var ward = this.ward.filter(function (item) {
+        return item.id === _this5.form.ward_id;
+      })[0].ward_name;
+
+      if (this.form.street !== '' && this.form.district_id !== '0' && this.form.province_id !== '0' && this.form.ward_id !== '0') {
+        this.form.address = this.form.street + this.form.address;
+      } else if (this.form.street === '') {
+        this.form.address = ', ' + ward + ', ' + district + ', ' + province;
+      }
+    },
+    onchangeArea: function onchangeArea() {
+      if (this.form.area !== 0 && this.form.price !== 0) {
+        this.totalPrice = this.form.area * this.form.price * 1000 * 1000;
+      }
+    },
+    onchangePrice: function onchangePrice() {
+      if (this.form.area !== 0 && this.form.price !== 0) {
+        this.totalPrice = this.form.area * this.form.price * 1000 * 1000;
+      }
+    },
+    keyupDesc: function keyupDesc() {
+      if (this.form.desc !== '') {
+        this.countChar--;
+      } else if (this.form.desc === '') {
+        this.countChar = 3000;
+      }
+    },
+    onchangeType: function onchangeType() {
+      var _this6 = this;
+
+      if (this.form.type_id === '0') {
+        this.totalTypePrice = 0;
+      } else {
+        axios.get(_config__WEBPACK_IMPORTED_MODULE_0__["apiDomainUser"] + 'product/range?date_start=' + this.form.date_start + '&date_end=' + this.form.date_end + '&type_id=' + this.form.type_id).then(function (res) {
+          if (res.data.status) {
+            _this6.totalTypePrice = res.data.data;
+          }
+        })["catch"](function (e) {});
+      }
+    },
+    onchangeDate: function onchangeDate() {
+      var _this7 = this;
+
+      axios.get(_config__WEBPACK_IMPORTED_MODULE_0__["apiDomainUser"] + 'product/range?date_start=' + this.form.date_start + '&date_end=' + this.form.date_end + '&type_id=' + this.form.type_id).then(function (res) {
+        if (res.data.status) {
+          _this7.totalTypePrice = res.data.data;
+        } else {
+          alert('Ngày bắt đầu phải nhỏ hơn ngày kết thúc');
+        }
+      })["catch"](function (e) {});
+    },
+    onFileChange: function onFileChange(e) {
+      this.form.image.push(e.target.files[0]);
+    },
+    createOrder: function createOrder() {
+      var _this8 = this;
+
+      var config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      };
+      var formData = new FormData();
+      formData.append('type_id', this.form.type_id);
+      formData.append('categories_id', this.form.categories_id);
+      formData.append('province_id', this.form.province_id);
+      formData.append('district_id', this.form.district_id);
+      formData.append('ward_id', this.form.ward_id);
+      formData.append('title', this.form.title);
+      formData.append('area', this.form.area);
+      formData.append('price', this.form.price);
+      formData.append('address', this.form.address);
+      formData.append('desc', this.form.desc);
+      formData.append('date_start', this.form.date_start);
+      formData.append('date_end', this.form.date_end);
+      formData.append('facade', this.form.facade);
+      formData.append('access_road', this.form.access_road);
+      formData.append('direction', this.form.direction);
+      formData.append('num_floor', this.form.num_floor);
+      formData.append('num_bedroom', this.form.num_bedroom);
+      formData.append('furniture', this.form.furniture);
+      formData.append('juridical', this.form.juridical);
+      formData.append('user_id', this.form.user_id);
+      formData.append('fullname', this.form.fullname);
+      formData.append('address', this.form.address);
+      formData.append('phone', this.form.phone);
+      formData.append('email', this.form.email);
+
+      for (var i = 0; i < this.form.image.length; i++) {
+        formData.append('image[' + i + ']', this.form.image[i]);
+      }
+
+      axios.post(_config__WEBPACK_IMPORTED_MODULE_0__["apiDomainUser"] + 'checkout/create', formData, config).then(function (res) {
+        _this8.errors = {};
+        console.log(res.data);
+
+        if (res.data.status) {
+          localStorage.setItem('checkout_success', 'Cảm ơn quý khách đã sử dụng dịch vụ');
+          window.location.href = res.data.data;
+        } else {
+          if (res.data.limit !== null) {
+            _this8.limitImage = res.data.limit;
+          } else {
+            for (var _i = 0, _Object$entries = Object.entries(res.data.errors); _i < _Object$entries.length; _i++) {
+              var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+                  key = _Object$entries$_i[0],
+                  value = _Object$entries$_i[1];
+
+              _this8.errors[key] = value[0];
+            }
+          }
+        }
+      }, alert('Đang trong quá trình xử lý xin vui lòng đừng tắt web'))["catch"](function (e) {});
+    }
+  },
+  created: function created() {
+    this.getList();
+
+    if (localStorage.getItem('checkout_success') !== null) {
+      alert(localStorage.getItem('checkout_success'));
+      localStorage.removeItem('checkout_success');
+      window.location.href = '/dang-tin-rao-ban';
+    }
+  },
+  mounted: function mounted() {}
+});
 
 /***/ }),
 
@@ -54026,13 +54299,1554 @@ var render = function() {
     [
       _c("navbarHome"),
       _vm._v(" "),
-      _vm._m(0),
+      _c("section", { staticClass: "ftco-section ftco-degree-bg" }, [
+        _c("div", { staticClass: "container" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-lg-8 ftco-animate" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.createOrder()
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "card" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card-header",
+                        staticStyle: {
+                          background: "#055699",
+                          color: "white",
+                          "font-size": "16px"
+                        }
+                      },
+                      [_vm._v("THÔNG TIN CƠ BẢN")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-12" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(1),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.title,
+                                  expression: "form.title"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.form.title },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "title",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.title))]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(2),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.categories_id,
+                                    expression: "form.categories_id"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { name: "", id: "" },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.form,
+                                      "categories_id",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  { attrs: { value: "", selected: "" } },
+                                  [_vm._v("Chọn")]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(_vm.categories, function(item, index) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: index,
+                                      domProps: { value: item.id }
+                                    },
+                                    [_vm._v(_vm._s(item.categories_name))]
+                                  )
+                                })
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.categories_id))]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(3),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.district_id,
+                                    expression: "form.district_id"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { name: "", id: "" },
+                                on: {
+                                  change: [
+                                    function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.$set(
+                                        _vm.form,
+                                        "district_id",
+                                        $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      )
+                                    },
+                                    function($event) {
+                                      return _vm.onchangeDistrict()
+                                    }
+                                  ]
+                                }
+                              },
+                              [
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("--Quận/huyện--")
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.district, function(item, index) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: index,
+                                      domProps: { value: item.id }
+                                    },
+                                    [_vm._v(_vm._s(item.district_name))]
+                                  )
+                                })
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.district_id))]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(4),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.street,
+                                  expression: "form.street"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "text",
+                                placeholder: "Nhập đường/phố"
+                              },
+                              domProps: { value: _vm.form.street },
+                              on: {
+                                change: function($event) {
+                                  return _vm.onchangeStreet()
+                                },
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "street",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(5),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.price,
+                                  expression: "form.price"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                placeholder: "Nhập giá tiền triệu/m2"
+                              },
+                              domProps: { value: _vm.form.price },
+                              on: {
+                                change: function($event) {
+                                  return _vm.onchangePrice()
+                                },
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "price",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.price))]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(6),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.province_id,
+                                    expression: "form.province_id"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { name: "", id: "" },
+                                on: {
+                                  change: [
+                                    function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.$set(
+                                        _vm.form,
+                                        "province_id",
+                                        $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      )
+                                    },
+                                    function($event) {
+                                      return _vm.onchangeProvince()
+                                    }
+                                  ]
+                                }
+                              },
+                              [
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("--Tỉnh/tp--")
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.province, function(item, index) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: index,
+                                      domProps: { value: item.id }
+                                    },
+                                    [_vm._v(_vm._s(item.province_name))]
+                                  )
+                                })
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.province_id))]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(7),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.ward_id,
+                                    expression: "form.ward_id"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { name: "", id: "" },
+                                on: {
+                                  change: [
+                                    function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.$set(
+                                        _vm.form,
+                                        "ward_id",
+                                        $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      )
+                                    },
+                                    function($event) {
+                                      return _vm.onchangeWard()
+                                    }
+                                  ]
+                                }
+                              },
+                              [
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("--Phường/xã--")
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.ward, function(item, index) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: index,
+                                      domProps: { value: item.id }
+                                    },
+                                    [_vm._v(_vm._s(item.ward_name))]
+                                  )
+                                })
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.ward_id))]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(8),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.area,
+                                  expression: "form.area"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "number",
+                                placeholder: "Nhập diện tích"
+                              },
+                              domProps: { value: _vm.form.area },
+                              on: {
+                                change: function($event) {
+                                  return _vm.onchangeArea()
+                                },
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "area",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.area))]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(9),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.hinhThucBan,
+                                    expression: "hinhThucBan"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { name: "", id: "" },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.hinhThucBan = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  }
+                                }
+                              },
+                              [
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("--Hình thức--")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "1" } }, [
+                                  _vm._v("Nhà đất bán")
+                                ])
+                              ]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-12" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("span", [_vm._v("Tổng giá tiền:")]),
+                            _c("span", { staticStyle: { color: "red" } }, [
+                              _vm._v(
+                                " " +
+                                  _vm._s(
+                                    _vm.totalPrice.toLocaleString("it-IT", {
+                                      style: "currency",
+                                      currency: "VND"
+                                    })
+                                  )
+                              )
+                            ])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-12" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(10),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.address,
+                                  expression: "form.address"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.form.address },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "address",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card-header",
+                        staticStyle: {
+                          background: "#055699",
+                          color: "white",
+                          "font-size": "16px"
+                        }
+                      },
+                      [_vm._v("THÔNG TIN CƠ BẢN")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-8" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(11),
+                            _vm._v(" "),
+                            _c("textarea", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.desc,
+                                  expression: "form.desc"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                name: "",
+                                id: "",
+                                cols: "10",
+                                rows: "5"
+                              },
+                              domProps: { value: _vm.form.desc },
+                              on: {
+                                keyup: function($event) {
+                                  return _vm.keyupDesc()
+                                },
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "desc",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.desc))]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c(
+                            "span",
+                            {
+                              staticStyle: { color: "red", "font-size": "13px" }
+                            },
+                            [_vm._v(_vm._s(_vm.countChar))]
+                          ),
+                          _c("br"),
+                          _vm._v(" "),
+                          _vm._m(12)
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card-header",
+                        staticStyle: {
+                          background: "#055699",
+                          color: "white",
+                          "font-size": "16px"
+                        }
+                      },
+                      [_vm._v("THÔNG TIN KHÁC")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("span", { staticStyle: { "font-size": "12px" } }, [
+                        _vm._v(
+                          "Quý vị nên điền đầy đủ thông tin vào các mục dưới đây để tin đăng có hiệu quả hơn"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", { attrs: { for: "" } }, [
+                              _vm._v("Mặt tiền")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.facade,
+                                  expression: "form.facade"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "number" },
+                              domProps: { value: _vm.form.facade },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "facade",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", { attrs: { for: "" } }, [
+                              _vm._v("Hướng nhà")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.direction,
+                                    expression: "form.direction"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { name: "", id: "" },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.form,
+                                      "direction",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("--Chọn hướng--")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("Đông")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("Tây")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("Nam")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("Bắc")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("Đông-Bắc")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("Tây-Bắc")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("Đông-Nam")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("Tây-Nam")
+                                ])
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", { attrs: { for: "" } }, [
+                              _vm._v("Số tầng")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.num_floor,
+                                  expression: "form.num_floor"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "number" },
+                              domProps: { value: _vm.form.num_floor },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "num_floor",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", { attrs: { for: "" } }, [
+                              _vm._v("Đường vào")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.access_road,
+                                  expression: "form.access_road"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "number" },
+                              domProps: { value: _vm.form.access_road },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "access_road",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _vm._m(13),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", { attrs: { for: "" } }, [
+                              _vm._v("Số phòng ngủ")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.num_bedroom,
+                                  expression: "form.num_bedroom"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "number" },
+                              domProps: { value: _vm.form.num_bedroom },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "num_bedroom",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-12" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", { attrs: { for: "" } }, [
+                              _vm._v("Nội thất")
+                            ]),
+                            _vm._v(" "),
+                            _c("textarea", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.furniture,
+                                  expression: "form.furniture"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                name: "",
+                                id: "",
+                                cols: "30",
+                                rows: "5"
+                              },
+                              domProps: { value: _vm.form.furniture },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "furniture",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-12" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", { attrs: { for: "" } }, [
+                              _vm._v("Thông tin pháp lý")
+                            ]),
+                            _vm._v(" "),
+                            _c("textarea", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.juridical,
+                                  expression: "form.juridical"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                name: "",
+                                id: "",
+                                cols: "30",
+                                rows: "2",
+                                placeholder:
+                                  "Ví dụ: Đã có sổ đỏ. Đã có sổ hồng. Đã được phê duyệt quyết định đầu tư..."
+                              },
+                              domProps: { value: _vm.form.juridical },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "juridical",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card-header",
+                        staticStyle: {
+                          background: "#055699",
+                          color: "white",
+                          "font-size": "16px"
+                        }
+                      },
+                      [_vm._v("HÌNH ẢNH")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-12" }, [
+                          _c("div", { staticClass: "custom-file" }, [
+                            _c("input", {
+                              staticClass: "custom-file-input",
+                              attrs: {
+                                type: "file",
+                                name: "image[]",
+                                id: "customFile",
+                                multiple: ""
+                              },
+                              on: { change: _vm.onFileChange }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-file-label",
+                                attrs: { for: "customFile" }
+                              },
+                              [_vm._v("Chọn ảnh")]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            {
+                              staticStyle: { color: "red", "margin-top": "5px" }
+                            },
+                            [_vm._v(_vm._s(_vm.errors.image))]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            {
+                              staticStyle: { color: "red", "margin-top": "5px" }
+                            },
+                            [_vm._v(_vm._s(_vm.limitImage))]
+                          ),
+                          _vm._v(" "),
+                          _vm._m(14)
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card-header",
+                        staticStyle: {
+                          background: "#055699",
+                          color: "white",
+                          "font-size": "16px"
+                        }
+                      },
+                      [_vm._v("LIÊN HỆ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(15),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.fullname,
+                                  expression: "form.fullname"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.form.fullname },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "fullname",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.fullname))]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(16),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.address,
+                                  expression: "form.address"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.form.address },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "address",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.address))]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(17),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.phone,
+                                  expression: "form.phone"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "number" },
+                              domProps: { value: _vm.form.phone },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "phone",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.phone))]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _vm._m(18),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.email,
+                                  expression: "form.email"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.form.email },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "email",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.email))]
+                            )
+                          ])
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card-header",
+                        staticStyle: {
+                          background: "#055699",
+                          color: "white",
+                          "font-size": "16px"
+                        }
+                      },
+                      [_vm._v("LỊCH ĐĂNG TIN")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", { attrs: { for: "" } }, [
+                              _vm._v("Loại tin rao")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.type_id,
+                                    expression: "form.type_id"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { name: "", id: "" },
+                                on: {
+                                  change: [
+                                    function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.$set(
+                                        _vm.form,
+                                        "type_id",
+                                        $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      )
+                                    },
+                                    function($event) {
+                                      return _vm.onchangeType()
+                                    }
+                                  ]
+                                }
+                              },
+                              [
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("Loại tin")
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.type, function(item, index) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: index,
+                                      domProps: { value: item.id }
+                                    },
+                                    [_vm._v(_vm._s(item.name))]
+                                  )
+                                })
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.type_id))]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", { attrs: { for: "" } }, [
+                              _vm._v("Ngày bắt đầu")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.date_start,
+                                  expression: "form.date_start"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "date" },
+                              domProps: { value: _vm.form.date_start },
+                              on: {
+                                change: function($event) {
+                                  return _vm.onchangeDate()
+                                },
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "date_start",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.date_start))]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", { attrs: { for: "" } }, [
+                              _vm._v("Ngày kết thúc")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.date_end,
+                                  expression: "form.date_end"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "date" },
+                              domProps: { value: _vm.form.date_end },
+                              on: {
+                                change: function($event) {
+                                  return _vm.onchangeDate()
+                                },
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "date_end",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "red",
+                                  "margin-top": "5px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.date_end))]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(19)
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card-header",
+                        staticStyle: {
+                          background: "#055699",
+                          color: "white",
+                          "font-size": "16px"
+                        }
+                      },
+                      [_vm._v("THÀNH TIỀN")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-12" }, [
+                          _c("table", { staticClass: "table" }, [
+                            _vm._m(20),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _c("th", { staticStyle: { color: "#390" } }, [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.totalTypePrice.toLocaleString("it-IT", {
+                                      style: "currency",
+                                      currency: "VND"
+                                    })
+                                  )
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("th", { staticStyle: { color: "#390" } }, [
+                                _vm._v(
+                                  _vm._s(
+                                    (
+                                      (_vm.totalTypePrice / 100) *
+                                      10
+                                    ).toLocaleString("it-IT", {
+                                      style: "currency",
+                                      currency: "VND"
+                                    })
+                                  )
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("th", { staticStyle: { border: "0" } }),
+                              _vm._v(" "),
+                              _c("th", { staticStyle: { color: "#f60" } }, [
+                                _vm._v(
+                                  _vm._s(
+                                    (
+                                      _vm.totalTypePrice +
+                                      (_vm.totalTypePrice / 100) * 10
+                                    ).toLocaleString("it-IT", {
+                                      style: "currency",
+                                      currency: "VND"
+                                    })
+                                  )
+                                )
+                              ])
+                            ])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-9" }),
+                        _vm._v(" "),
+                        _vm._m(21)
+                      ])
+                    ])
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _vm._m(22)
+          ])
+        ])
+      ]),
       _vm._v(" "),
       _c("footerHome"),
       _vm._v(" "),
       _c("registerComponent"),
       _vm._v(" "),
-      _c("loginComponent")
+      _c("loginComponent"),
+      _vm._v("\n  " + _vm._s(_vm.loader) + "\n")
     ],
     1
   )
@@ -54042,924 +55856,333 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("section", { staticClass: "ftco-section ftco-degree-bg" }, [
-      _c("div", { staticClass: "container" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-lg-8 ftco-animate" }, [
-            _c("div", { staticClass: "text-center" }, [
-              _c(
-                "h1",
-                { staticStyle: { "font-size": "22px", color: "#069" } },
-                [
-                  _c("i", { staticClass: "icon-edit" }),
-                  _vm._v("ĐĂNG TIN RAO BÁN,CHO THUÊ NHÀ ĐẤT")
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "card-header",
-                  staticStyle: {
-                    background: "#055699",
-                    color: "white",
-                    "font-size": "16px"
-                  }
-                },
-                [_vm._v("THÔNG TIN CƠ BẢN")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-md-12" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "title" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Tiêu đề")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "text" }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-6" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "title" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Loại")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          staticClass: "form-control",
-                          attrs: { name: "", id: "" }
-                        },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Chọn")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [_vm._v("2")]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [_vm._v("3")])
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "title" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Quận/huyện")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          staticClass: "form-control",
-                          attrs: { name: "", id: "" }
-                        },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("--Quận/huyện--")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [_vm._v("2")]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [_vm._v("3")])
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "title" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Đường/phố")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "text", placeholder: "Nhập đường/phố" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "title" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Giá")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          placeholder: "Nhập giá tiền triệu/m2"
-                        }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-6" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "province" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Tỉnh/TP")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          staticClass: "form-control",
-                          attrs: { name: "", id: "" }
-                        },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("--Tỉnh/tp--")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [_vm._v("2")]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [_vm._v("3")])
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "province" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Phường/xã")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          staticClass: "form-control",
-                          attrs: { name: "", id: "" }
-                        },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("--Phường/xã--")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [_vm._v("2")]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [_vm._v("3")])
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "title" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Diện tích")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "text", placeholder: "Nhập diện tích" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "province" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Hình thức")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          staticClass: "form-control",
-                          attrs: { name: "", id: "" }
-                        },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("--Hình thức--")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Nhà đất bán")
-                          ])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-12" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("span", [_vm._v("Tổng giá tiền:")]),
-                      _c("span", { staticStyle: { color: "red" } }, [
-                        _vm._v(" 12000")
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-12" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "address" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Địa chỉ")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "text" }
-                      })
-                    ])
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
-            _c("div", { staticClass: "card" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "card-header",
-                  staticStyle: {
-                    background: "#055699",
-                    color: "white",
-                    "font-size": "16px"
-                  }
-                },
-                [_vm._v("THÔNG TIN CƠ BẢN")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-md-8" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Tổi đa chỉ 3000 ký tự")
-                      ]),
-                      _vm._v(" "),
-                      _c("textarea", {
-                        staticClass: "form-control",
-                        attrs: { name: "", id: "", cols: "10", rows: "5" }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-4" }, [
-                    _c(
-                      "span",
-                      { staticStyle: { color: "red", "font-size": "13px" } },
-                      [_vm._v("3000")]
-                    ),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c(
-                      "span",
-                      {
-                        staticStyle: {
-                          "font-size": "13px",
-                          "word-break": "all"
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "icon-caret-right" }),
-                        _vm._v(
-                          " Giới thiệu chung về bất động sản của bạn. Ví dụ: Khu nhà có vị trí thuận lợi: Gần công viên, gần trường học ... Tổng diện tích 52m2, đường đi ô tô vào tận cửa.\n                          "
-                        ),
-                        _c("br"),
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v(
-                            "Lưu ý: tin rao chỉ để mệnh giá tiền Việt Nam Đồng."
-                          )
-                        ])
-                      ]
-                    )
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
-            _c("div", { staticClass: "card" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "card-header",
-                  staticStyle: {
-                    background: "#055699",
-                    color: "white",
-                    "font-size": "16px"
-                  }
-                },
-                [_vm._v("THÔNG TIN KHÁC")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-md-6" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Mặt tiền")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "text" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Hướng nhà")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          staticClass: "form-control",
-                          attrs: { name: "", id: "" }
-                        },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("--Chọn hướng--")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Đông")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Tây")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Nam")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Bắc")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Đông-Bắc")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Tây-Bắc")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Đông-Nam")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Tây-Nam")
-                          ])
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Số tầng")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "text" }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-6" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Đường vào")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "text" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _vm._v("Hướng ban công")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          staticClass: "form-control",
-                          attrs: { name: "", id: "" }
-                        },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("--Chọn hướng--")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Đông")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Tây")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Nam")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Bắc")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Đông-Bắc")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Tây-Bắc")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Đông-Nam")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Tây-Nam")
-                          ])
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Số phòng ngủ")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "text" }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-12" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Nội thất")
-                      ]),
-                      _vm._v(" "),
-                      _c("textarea", {
-                        staticClass: "form-control",
-                        attrs: { name: "", id: "", cols: "30", rows: "5" }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-12" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Thông tin pháp lý")
-                      ]),
-                      _vm._v(" "),
-                      _c("textarea", {
-                        staticClass: "form-control",
-                        attrs: {
-                          name: "",
-                          id: "",
-                          cols: "30",
-                          rows: "2",
-                          placeholder:
-                            "Ví dụ: Đã có sổ đỏ. Đã có sổ hồng. Đã được phê duyệt quyết định đầu tư..."
-                        }
-                      })
-                    ])
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
-            _c("div", { staticClass: "card" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "card-header",
-                  staticStyle: {
-                    background: "#055699",
-                    color: "white",
-                    "font-size": "16px"
-                  }
-                },
-                [_vm._v("HÌNH ẢNH")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-md-12" }, [
-                    _c("div", { staticClass: "custom-file" }, [
-                      _c("input", {
-                        staticClass: "custom-file-input",
-                        attrs: {
-                          type: "file",
-                          name: "image[]",
-                          id: "customFile",
-                          multiple: ""
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        {
-                          staticClass: "custom-file-label",
-                          attrs: { for: "customFile" }
-                        },
-                        [_vm._v("Chọn ảnh")]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "card cardResult",
-                        staticStyle: { "margin-top": "5px", display: "none" },
-                        attrs: { id: "cardResult" }
-                      },
-                      [
-                        _c("div", { staticClass: "card-body" }, [
-                          _c("div", { attrs: { id: "result" } })
-                        ])
-                      ]
-                    )
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
-            _c("div", { staticClass: "card" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "card-header",
-                  staticStyle: {
-                    background: "#055699",
-                    color: "white",
-                    "font-size": "16px"
-                  }
-                },
-                [_vm._v("LIÊN HỆ")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-md-6" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Tên liên hệ")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "text" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Địa chỉ")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "text" }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-6" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Điện thoại")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "text" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _c("span", { staticStyle: { color: "red" } }, [
-                          _vm._v("*")
-                        ]),
-                        _vm._v("Email")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "text" }
-                      })
-                    ])
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
-            _c("div", { staticClass: "card" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "card-header",
-                  staticStyle: {
-                    background: "#055699",
-                    color: "white",
-                    "font-size": "16px"
-                  }
-                },
-                [_vm._v("LỊCH ĐĂNG TIN")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-md-4" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _vm._v("Loại tin rao")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          staticClass: "form-control",
-                          attrs: { name: "", id: "" }
-                        },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Tin thường")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Tin vip 1")
-                          ])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-4" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _vm._v("Ngày bắt đầu")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "date" }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-4" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [
-                        _vm._v("Ngày kết thúc")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "date" }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-8" }, [
-                    _c("span", { staticStyle: { "font-size": "14px" } }, [
-                      _vm._v("Tin thường: Là loại tin đăng bằng chữ "),
-                      _c("span", { staticStyle: { color: "#009AD2" } }, [
-                        _vm._v("màu xanh")
-                      ]),
-                      _vm._v(", khung "),
-                      _c("span", { staticStyle: { color: "#009AD2" } }, [
-                        _vm._v("màu xanh")
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("br"),
-                    _c("span", [
-                      _vm._v("Đơn giá cuối cùng: "),
-                      _c(
-                        "span",
-                        { staticStyle: { color: "#069", "font-size": "20px" } },
-                        [_vm._v("2.722 đồng/Ngày")]
-                      )
-                    ])
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
-            _c("div", { staticClass: "card" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "card-header",
-                  staticStyle: {
-                    background: "#055699",
-                    color: "white",
-                    "font-size": "16px"
-                  }
-                },
-                [_vm._v("THÀNH TIỀN")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-md-12" }, [
-                    _c("table", { staticClass: "table" }, [
-                      _c("tr", [
-                        _c(
-                          "th",
-                          {
-                            staticStyle: {
-                              "background-color": "#390",
-                              color: "white"
-                            }
-                          },
-                          [_vm._v("Phí đăng tin")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "th",
-                          {
-                            staticStyle: {
-                              "background-color": "#390",
-                              color: "white"
-                            }
-                          },
-                          [_vm._v("VAT(10%)")]
-                        ),
-                        _vm._v(" "),
-                        _c("th", { staticStyle: { border: "0" } }),
-                        _vm._v(" "),
-                        _c(
-                          "th",
-                          {
-                            staticStyle: {
-                              "background-color": "#f60",
-                              color: "white"
-                            }
-                          },
-                          [_vm._v("Thành tiền")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("th", { staticStyle: { color: "#390" } }, [
-                          _vm._v("70.000đ")
-                        ]),
-                        _vm._v(" "),
-                        _c("th", { staticStyle: { color: "#390" } }, [
-                          _vm._v("7.000đ")
-                        ]),
-                        _vm._v(" "),
-                        _c("th", { staticStyle: { border: "0" } }),
-                        _vm._v(" "),
-                        _c("th", { staticStyle: { color: "#f60" } }, [
-                          _vm._v("77.000đ")
-                        ])
-                      ])
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-4 sidebar ftco-animate" }, [
-            _c("div", { staticClass: "sidebar-box ftco-animate" }, [
-              _c("div", { staticClass: "categories" }, [
-                _c("img", {
-                  staticStyle: { "margin-bottom": "5px" },
-                  attrs: {
-                    src: "/assets/image_post/bds_cuchi.jpg",
-                    alt: "",
-                    height: "295",
-                    width: "300"
-                  }
-                }),
-                _vm._v(" "),
-                _c("img", {
-                  attrs: {
-                    src: "/assets/image_post/jamja-gdn-banner-300x250.jpg",
-                    alt: "",
-                    height: "300",
-                    width: "300"
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "sidebar-box ftco-animate" }, [
-              _c("div", { staticClass: "categories" }, [
-                _c("img", {
-                  staticStyle: { "margin-bottom": "5px" },
-                  attrs: {
-                    src: "/assets/image_post/bds_cuchi.jpg",
-                    alt: "",
-                    height: "295",
-                    width: "300"
-                  }
-                }),
-                _vm._v(" "),
-                _c("img", {
-                  attrs: {
-                    src: "/assets/image_post/jamja-gdn-banner-300x250.jpg",
-                    alt: "",
-                    height: "300",
-                    width: "300"
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "sidebar-box ftco-animate" }, [
-              _c("img", {
-                attrs: { src: "/assets/image_post/quangcao.jpg", alt: "" }
-              }),
-              _vm._v(" "),
-              _c("img", {
-                attrs: { src: "/assets/image_post/sunbay.gif", alt: "" }
-              })
-            ])
-          ])
+    return _c("div", { staticClass: "text-center" }, [
+      _c("h1", { staticStyle: { "font-size": "22px", color: "#069" } }, [
+        _c("i", { staticClass: "icon-edit" }),
+        _vm._v("ĐĂNG TIN RAO BÁN,CHO THUÊ NHÀ ĐẤT")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "title" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Tiêu đề")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "title" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Loại")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "title" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Quận/huyện")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "title" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Đường/phố")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "title" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Giá")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "province" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Tỉnh/TP")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "province" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Phường/xã")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "title" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Diện tích")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "province" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Hình thức")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "address" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Địa chỉ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Tổi đa chỉ 3000 ký tự")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "span",
+      { staticStyle: { "font-size": "13px", "word-break": "all" } },
+      [
+        _c("i", { staticClass: "icon-caret-right" }),
+        _vm._v(
+          " Giới thiệu chung về bất động sản của bạn. Ví dụ: Khu nhà có vị trí thuận lợi: Gần công viên, gần trường học ... Tổng diện tích 52m2, đường đi ô tô vào tận cửa.\n                          "
+        ),
+        _c("br"),
+        _c("span", { staticStyle: { color: "red" } }, [
+          _vm._v("Lưu ý: tin rao chỉ để mệnh giá tiền Việt Nam Đồng.")
         ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "" } }, [_vm._v("Hướng ban công")]),
+      _vm._v(" "),
+      _c(
+        "select",
+        { staticClass: "form-control", attrs: { name: "", id: "" } },
+        [
+          _c("option", { attrs: { value: "" } }, [_vm._v("--Chọn hướng--")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "" } }, [_vm._v("Đông")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "" } }, [_vm._v("Tây")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "" } }, [_vm._v("Nam")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "" } }, [_vm._v("Bắc")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "" } }, [_vm._v("Đông-Bắc")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "" } }, [_vm._v("Tây-Bắc")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "" } }, [_vm._v("Đông-Nam")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "" } }, [_vm._v("Tây-Nam")])
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "card cardResult",
+        staticStyle: { "margin-top": "5px", display: "none" },
+        attrs: { id: "cardResult" }
+      },
+      [
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { attrs: { id: "result" } })
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Tên liên hệ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Địa chỉ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Điện thoại")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "" } }, [
+      _c("span", { staticStyle: { color: "red" } }, [_vm._v("*")]),
+      _vm._v("Email")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-8" }, [
+      _c("span", { staticStyle: { "font-size": "14px" } }, [
+        _vm._v("Tin thường: Là loại tin đăng bằng chữ "),
+        _c("span", { staticStyle: { color: "#009AD2" } }, [_vm._v("màu xanh")]),
+        _vm._v(", khung "),
+        _c("span", { staticStyle: { color: "#009AD2" } }, [_vm._v("màu xanh")])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _c("span", [
+        _vm._v("Đơn giá cuối cùng: "),
+        _c("span", { staticStyle: { color: "#069", "font-size": "20px" } }, [
+          _vm._v("2.722 đồng/Ngày")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c(
+        "th",
+        { staticStyle: { "background-color": "#390", color: "white" } },
+        [_vm._v("Phí đăng tin")]
+      ),
+      _vm._v(" "),
+      _c(
+        "th",
+        { staticStyle: { "background-color": "#390", color: "white" } },
+        [_vm._v("VAT(10%)")]
+      ),
+      _vm._v(" "),
+      _c("th", { staticStyle: { border: "0" } }),
+      _vm._v(" "),
+      _c(
+        "th",
+        { staticStyle: { "background-color": "#f60", color: "white" } },
+        [_vm._v("Thành tiền")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-3" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-success", attrs: { type: "submit" } },
+        [_vm._v("Xác nhận đăng tin")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-lg-4 sidebar ftco-animate" }, [
+      _c("div", { staticClass: "sidebar-box ftco-animate" }, [
+        _c("div", { staticClass: "categories" }, [
+          _c("img", {
+            staticStyle: { "margin-bottom": "5px" },
+            attrs: {
+              src: "/assets/image_post/bds_cuchi.jpg",
+              alt: "",
+              height: "295",
+              width: "300"
+            }
+          }),
+          _vm._v(" "),
+          _c("img", {
+            attrs: {
+              src: "/assets/image_post/jamja-gdn-banner-300x250.jpg",
+              alt: "",
+              height: "300",
+              width: "300"
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "sidebar-box ftco-animate" }, [
+        _c("div", { staticClass: "categories" }, [
+          _c("img", {
+            staticStyle: { "margin-bottom": "5px" },
+            attrs: {
+              src: "/assets/image_post/bds_cuchi.jpg",
+              alt: "",
+              height: "295",
+              width: "300"
+            }
+          }),
+          _vm._v(" "),
+          _c("img", {
+            attrs: {
+              src: "/assets/image_post/jamja-gdn-banner-300x250.jpg",
+              alt: "",
+              height: "300",
+              width: "300"
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "sidebar-box ftco-animate" }, [
+        _c("img", {
+          attrs: { src: "/assets/image_post/quangcao.jpg", alt: "" }
+        }),
+        _vm._v(" "),
+        _c("img", { attrs: { src: "/assets/image_post/sunbay.gif", alt: "" } })
       ])
     ])
   }

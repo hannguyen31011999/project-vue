@@ -122,6 +122,16 @@ Route::group(['namespace'=>'frontend\api'],function(){
 
     // get user
     Route::get('/user','ApiHomeController@getUserLogin');
+
+    // create product
+    Route::get('/product','ApiCreateProductController@getList');
+    // range time 1 and time 2
+    Route::get('/product/range','ApiCreateProductController@rangeTime');
+
+    // create checkout
+    Route::post('/checkout/create','ApiCheckoutController@createOrder');
+    // response checkout
+    Route::get('/dang-tin-rao-ban','ApiCheckoutController@returnResult');
     
     // logout user
     Route::get('/logout','ApiHomeController@logoutUser');

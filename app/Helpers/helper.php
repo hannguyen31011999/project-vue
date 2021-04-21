@@ -1,5 +1,32 @@
 <?php
 
+if (!function_exists('limitImage')) {
+	function limitImage($type)
+	{
+		switch($type){
+			case 1:{
+				return 6;
+			}
+			case 2:{
+				return 4;
+			}
+			case 3:{
+				return 10;
+			}
+			case 4:{
+				return 10;
+			}
+			case 5:{
+				return 12;
+			}
+			case 6:{
+				return 20;
+			}
+		}
+	}
+}
+
+
 if (!function_exists('randomCode')) {
     function randomCode($length)
     {
