@@ -97,6 +97,8 @@ if (! function_exists('utf8tourl')) {
         $text = str_replace(")","",$text);
         $text = str_replace("/","",$text);
 		$text = str_replace('"',"",$text);
+		$text = str_replace(', ',"-",$text);
+		$text = str_replace(' ',"-",$text);
 		return $text;
 	}
 }

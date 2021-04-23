@@ -13,6 +13,7 @@ class Categories extends Model
     protected $fillable = [
         'id',
         'categories_name',
+        'url',
         'created_at',
         'updated_at'
     ];
@@ -20,5 +21,10 @@ class Categories extends Model
     public function Products()
     {
         return $this->hasMany('App\Model\Product','categories_id','id');
+    }
+
+    public function Slugs()
+    {
+        return $this->hasMany('App\Model\Slug','categories_id','id');
     }
 }

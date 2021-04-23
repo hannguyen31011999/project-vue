@@ -15,10 +15,12 @@ use App\Model\User;
 use App\Model\Post;
 use App\Model\Province;
 use App\Model\District;
+use App\Model\Product;
 use App\Model\Ward;
 use Carbon\Carbon;
 class ApiHomeController extends Controller
 {
+    // http://localhost:8000/api/categories/list
     public function getListCategories()
     {
         $categories = Categories::all();
@@ -30,6 +32,7 @@ class ApiHomeController extends Controller
     }
 
 
+    // http://localhost:8000/api/post/list
     public function getListPost()
     {
         // $post = DB::table('bds_post')
@@ -41,11 +44,39 @@ class ApiHomeController extends Controller
         //             ->get();
         $post = Post::whereMonth('created_at',Carbon::now()->month)
                     ->orderBy('created_at','desc')
-                    ->take(4)
+                    ->take(3)
                     ->get(['id','title','image','url','created_at']);
         return response()->json([
             'data'=>$post,
             'status'=>true,
+            'errors'=>null,
+        ]);
+    }
+
+    // http://localhost:8000/api/product/list
+    public function getListProduct()
+    {
+        $dateNow = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+        $special = Product::where('date_end','>=',$dateNow)
+                            ->where('type_id','=',6)
+                            ->with(['ProductImages','Slugs'])
+                            ->orderBy('created_at','desc')
+                            ->take(2)
+                            ->get();
+        $product = Product::where('date_end','>=',$dateNow)
+                            ->where('type_id','=',6)
+                            ->orWhere('type_id','=',3)
+                            ->orWhere('type_id','=',4)
+                            ->with(['ProductImages','Slugs'])
+                            ->orderBy('created_at','desc')
+                            ->take(6)
+                            ->get();
+        return response()->json([
+            'status'=>true,
+            'data'=>[
+                'product'=>$product,
+                'special'=>$special
+            ],
             'errors'=>null,
         ]);
     }

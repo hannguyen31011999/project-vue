@@ -23,6 +23,8 @@ import HomeComponent from './components/frontend/home/HomeComponent.vue';
 import DetailPostComponent from './components/frontend/post/DetailPostComponent.vue';
 import PostComponent from './components/frontend/post/PostComponent.vue';
 import CreateProductComponent from './components/frontend/product/CreateProductComponent.vue';
+import ListProductComponent from './components/frontend/product/ListProductComponent.vue';
+
 export const routes = [
     // ADMIN
     {
@@ -102,5 +104,11 @@ export const routes = [
         name:'createProduct',
         path:'/dang-tin-rao-ban',
         component:CreateProductComponent
+    },
+    // list product
+    {
+        name:'listProduct',
+        path:'/:url',
+        component:ListProductComponent
     }
 ]

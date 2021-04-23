@@ -55,7 +55,11 @@ class ApiCategoriesController extends Controller
             ]);
         }else{
             try{
-                $categories = Categories::create($request->all());
+                $input = [
+                    'categories_name'=>$request->categories_name,
+                    'url'=>utf8tourl($request->categories_name)
+                ];
+                $categories = Categories::create($input);
                 return response()->json([
                     'data'=>$categories,
                     'status'=>true,
@@ -120,8 +124,12 @@ class ApiCategoriesController extends Controller
             ]);
         }else{
             try{
+                $input = [
+                    'categories_name'=>$request->categories_name,
+                    'url'=>utf8tourl($request->categories_name)
+                ];
                 $categories = Categories::findOrFail($id);
-                if($categories->update($request->all())){
+                if($categories->update($input)){
                     return response()->json([
                         'data'=>$categories,
                         'status'=>true,

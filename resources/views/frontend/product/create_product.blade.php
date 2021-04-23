@@ -1,7 +1,7 @@
 @extends('frontend.master')
 
 @section('title')
-    Kênh thông tin bất động sản quận 9
+    Đăng tin bán nhà đất
 @endsection
 
 @section('css')
@@ -37,8 +37,6 @@ input[type="file"] {
 <div id="app">
     <router-view></router-view>
 </div>
-@endsection
-
 @section('js')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
@@ -68,30 +66,6 @@ $(document).ready(function() {
     }else {
         alert("Đã xảy ra lỗi xin thử lại")
     }
-// function previewImages() {
-//     var preview = document.querySelector('#result');
-//     var card = document.getElementById('cardResult');
-//     if (this.files) {
-//         [].forEach.call(this.files, readAndPreview);
-//     }
-
-//     function readAndPreview(file) {
-//         var reader = new FileReader();
-//         reader.addEventListener("load", function() {
-//             var image = new Image();
-//             image.id = 'image';
-//             image.height = 100;
-//             image.width = 100;
-//             image.style = "margin-left:5px;border:1px solid #ccc!important;margin-bottom:5px;text-align:center;";
-//             image.title  = file.name;
-//             image.src    = this.result;
-//             $('.cardResult').css('display','block');
-//             preview.appendChild(image);
-//         });
-//         reader.readAsDataURL(file);
-//     }
-// }
-// document.querySelector('#customFile').addEventListener("change", previewImages);
 });
 
 </script>

@@ -33,7 +33,7 @@ class ApiCheckoutController extends Controller
                 'province_id'=>'required',
                 'district_id'=>'required',
                 'ward_id'=>'required',
-                'title'=>'required|max:254',
+                'title'=>'required|max:100',
                 'area'=>'required|numeric',
                 'price'=>'required|numeric',
                 'desc'=>'required|max:3000',
@@ -41,6 +41,7 @@ class ApiCheckoutController extends Controller
                 'date_end'=>'required',
                 'fullname'=>'required|max:254|regex:[^[a-zA-Z]]',
                 'address'=>'required|max:254',
+                'address_guest'=>'required|max:254',
                 'phone'=>'required|numeric|regex:/(0)[0-9]{9}/',
                 'email'=>'required|max:100|email',
                 'image'=>'required'
@@ -52,7 +53,8 @@ class ApiCheckoutController extends Controller
                 'district_id.required'=>'Vui lòng chọn quận/huyện',
                 'ward_id.required'=>'Vui lòng chọn phường/xã',
                 'title.required'=>'Vui lòng nhập tiêu đề',
-                'title.max'=>'Tiêu đề tối đa 254 kí tự',
+                'title.max'=>'Tiêu đề tối đa 100 kí tự',
+                'title.regex'=>'Tiêu đề có kí tự đặc biệt',
                 'area.required'=>'Vui lòng nhập diện tích',
                 'area.numeric'=>'Diện tích phải là số',
                 'price.required'=>'Vui lòng nhập giá tiền',
@@ -66,6 +68,8 @@ class ApiCheckoutController extends Controller
                 'fullname.regex'=>'Tên phải là chữ',
                 'address.required'=>'Vui lòng nhập địa chỉ liên lạc',
                 'address.max'=>'Địa chỉ tối đa 254 kí tự',
+                'address_guest.required'=>'Vui lòng nhập địa chỉ',
+                'address_guest.max'=>'Địa chỉ tối đa 254 kí tự',
                 'phone.required'=>'Vui lòng nhập số điện thoại',
                 'phone.regex'=>'Số điện thoại sai định dạng',
                 'phone.numeric'=>'Số điện thoại phải là số',
@@ -97,7 +101,7 @@ class ApiCheckoutController extends Controller
                     $order = [
                         'user_id'=>!empty($request->user_id) ? $request->user_id : null,
                         'fullname'=>$request->fullname,
-                        'address'=>$request->address,
+                        'address'=>$request->address_guest,
                         'phone'=>$request->phone,
                         'email'=>$request->email,
                         'total_date'=>$totalDate,
@@ -142,14 +146,14 @@ class ApiCheckoutController extends Controller
                         ]);
                         $files->move('assets/image_product',$files->getClientOriginalName());
                     }
-                    $mail = [
-                        'email'=>$request->email,
-                        'code'=>$product->id
-                    ];
-                    Mail::send('frontend.mail.checkout_mail',$mail,
-                        function($messenger) use ($mail){
-                            $messenger->to($mail["email"],'Hệ thống')->subject('[Bất động sản Quận 9] Đơn hàng của bạn?');
-                    });
+                    // $mail = [
+                    //     'email'=>$request->email,
+                    //     'code'=>$product->id
+                    // ];
+                    // Mail::send('frontend.mail.checkout_mail',$mail,
+                    //     function($messenger) use ($mail){
+                    //         $messenger->to($mail["email"],'Hệ thống')->subject('[Bất động sản Quận 9] Đơn hàng của bạn?');
+                    // });
                 }else{
                     return response()->json([
                         'status'=>false,

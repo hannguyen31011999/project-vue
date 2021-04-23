@@ -13,18 +13,10 @@
             class="row no-gutters slider-text align-items-md-end align-items-center justify-content-end"
           >
             <div class="col-md-6 text p-4 ftco-animate">
-              <h1 class="mb-3">Florida 5, Pinecrest, FL</h1>
-              <span class="location d-block mb-3"
-                ><i class="icon-my_location"></i> Melbourne, Vic 3004</span
-              >
-              <p>
-                A small river named Duden flows by their place and supplies it
-                with the necessary regelialia. It is a paradisematic country, in
-                which roasted parts of sentences fly into your mouth.
-              </p>
-              <span class="price">$28,000</span>
-              <a href="#" class="btn-custom p-3 px-4 bg-primary"
-                >View Details <span class="icon-plus ml-1"></span
+              <h1 class="mb-3">{{ special[0].title }}</h1>
+              <span class="price"><i class="flaticon-selection"></i> {{ special[0].area }}m2 {{ special[0].price * special[0].area / 1000 }} tỷ</span>
+              <a href="" @click.prevent="redirectProductDetail(special[0].slugs[0].url)" class="btn-custom p-3 px-4 bg-primary"
+                >Chi tiết <span class="icon-plus ml-1"></span
               ></a>
             </div>
           </div>
@@ -41,18 +33,10 @@
             class="row no-gutters slider-text align-items-md-end align-items-center justify-content-end"
           >
             <div class="col-md-6 text p-4 ftco-animate">
-              <h1 class="mb-3">3015 Grand Avenue, CocoWalk</h1>
-              <span class="location d-block mb-3"
-                ><i class="icon-my_location"></i> Melbourne, Vic 3004</span
-              >
-              <p>
-                A small river named Duden flows by their place and supplies it
-                with the necessary regelialia. It is a paradisematic country, in
-                which roasted parts of sentences fly into your mouth.
-              </p>
-              <span class="price">$28,000</span>
-              <a href="#" class="btn-custom p-3 px-4 bg-primary"
-                >View Details <span class="icon-plus ml-1"></span
+              <h1 class="mb-3">{{ special[1].title }}</h1>
+              <span class="price"><i class="flaticon-selection"></i> {{ special[1].area }}m2 {{ special[1].price * special[1].area / 1000 }} tỷ</span>
+              <a href="" @click.prevent="redirectProductDetail(special[1].slugs[1].url)" class="btn-custom p-3 px-4 bg-primary"
+                >Chi tiết <span class="icon-plus ml-1"></span
               ></a>
             </div>
           </div>
@@ -72,7 +56,13 @@
                   <div class="form-group">
                     <select name="" id="" class="form-control">
                       <option value="" selected>Loại nhà đất</option>
-                      <option v-for="(item,index) in categories" :key="index" :value="item.id">{{ item.categories_name }}</option>
+                      <option
+                        v-for="(item, index) in categories"
+                        :key="index"
+                        :value="item.id"
+                      >
+                        {{ item.categories_name }}
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -94,25 +84,60 @@
               <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">
-                    <select name="" id="" class="form-control" v-model="seach.province" @change="changeProvince()">
+                    <select
+                      name=""
+                      id=""
+                      class="form-control"
+                      v-model="seach.province"
+                      @change="changeProvince()"
+                    >
                       <option value="0">Trên toàn quốc</option>
-                      <option v-for="(item,index) in province" :key="index" :value="item.id">{{ item.province_name }}</option>
+                      <option
+                        v-for="(item, index) in province"
+                        :key="index"
+                        :value="item.id"
+                      >
+                        {{ item.province_name }}
+                      </option>
                     </select>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <select name="" id="" class="form-control" v-model="seach.district" @change="changeDistrict()">
+                    <select
+                      name=""
+                      id=""
+                      class="form-control"
+                      v-model="seach.district"
+                      @change="changeDistrict()"
+                    >
                       <option value="0">Quận/huyện</option>
-                      <option v-for="(item,index) in district" :key="index" :value="item.id">{{ item.district_name }}</option>
+                      <option
+                        v-for="(item, index) in district"
+                        :key="index"
+                        :value="item.id"
+                      >
+                        {{ item.district_name }}
+                      </option>
                     </select>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <select name="" id="" class="form-control" v-model="seach.ward">
+                    <select
+                      name=""
+                      id=""
+                      class="form-control"
+                      v-model="seach.ward"
+                    >
                       <option value="0">Phường/xã</option>
-                      <option v-for="(item,index) in ward" :key="index" :value="item.id">{{ item.ward_name }}</option>
+                      <option
+                        v-for="(item, index) in ward"
+                        :key="index"
+                        :value="item.id"
+                      >
+                        {{ item.ward_name }}
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -195,23 +220,45 @@
             <h2>Tin Tiêu Điểm</h2>
           </div>
         </div>
-        <div class="row d-flex">
-          <div class="col-md-3 d-flex ftco-animate" v-for="(item,index) in post" :key="index">
-            <div class="blog-entry align-self-stretch">
+        <div class="container-fluid">
+          <div class="row">
+            <div
+              class="col-md-4 ftco-animate"
+              v-for="(item, index) in post"
+              :key="index"
+            >
+              <div class="properties">
                 <a
                   href=""
                   @click.prevent="redirectDetailPost(item.url)"
-                  class="block-20"
-                  :style="{ 'background-image': 'url(' + '/assets/image_post/' + item.image + ')' }"
+                  class="img img-2 d-flex justify-content-center align-items-center"
+                  :style="{
+                    'background-image':
+                      'url(' + '/assets/image_post/' + item.image + ')',
+                  }"
                 >
+                  <div
+                    class="icon d-flex justify-content-center align-items-center"
+                  >
+                    <span class="icon-search2"></span>
+                  </div>
                 </a>
-              <div class="text mt-3 d-block">
-                <div class="meta mb-3">
-                  <div>{{ convertDate(item.created_at) }} ngày trước</div>
+                <div class="text p-3">
+                  <div style="height: 40px">
+                    <a
+                      href=""
+                      @click.prevent="
+                        redirectDetailPost(item.url)
+                      "
+                      >{{ item.title }}</a
+                    >
+                  </div>
+                  <hr />
+                  <p class="bottom-area d-flex">
+                    <span>{{ convertDate(item.created_at) }} ngày trước</span
+                    >
+                  </p>
                 </div>
-                <h3 class="heading mt-3">
-                    <a href="" @click.prevent="redirectDetailPost(item.url)">{{ item.title }}</a>
-                </h3>
               </div>
             </div>
           </div>
@@ -221,190 +268,63 @@
     <!-- end post -->
 
     <!-- product -->
-    <section class="ftco-section ftco-properties">
+    <section class="ftco-section bg-light">
       <div class="container">
         <div class="row justify-content-center mb-5 pb-3">
           <div class="col-md-7 heading-section text-center ftco-animate">
-            <span class="subheading">Sản Phẩm</span>
-            <h2 class="mb-4">Bất Động Sản Dành Cho Bạn</h2>
+            <span class="subheading">Tin tức nhà đất mới nhất</span>
+            <h2 class="mb-4">Bất động sản dành cho bạn</h2>
           </div>
         </div>
+      </div>
+      <div class="container-fluid">
         <div class="row">
-          <div class="col-md-12">
-            <div class="properties-slider owl-carousel ftco-animate">
-              <div class="item">
-                <div class="properties">
-                  <a
-                    href="#"
-                    class="img d-flex justify-content-center align-items-center"
-                    style="
-                      background-image: url('/frontend/images/properties-1.jpg');
-                    "
-                  >
-                    <div
-                      class="icon d-flex justify-content-center align-items-center"
-                    >
-                      <span class="icon-search2"></span>
-                    </div>
-                  </a>
-                  <div class="text p-3">
-                    <span class="status sale">Sale</span>
-                    <div class="d-flex">
-                      <div class="one">
-                        <h3><a href="#">North Parchmore Street</a></h3>
-                        <p>Apartment</p>
-                      </div>
-                      <div class="two">
-                        <span class="price">$20,000</span>
-                      </div>
-                    </div>
-                  </div>
+          <div
+            class="col-md-4 ftco-animate"
+            v-for="(product, index) in product"
+            :key="index"
+          >
+            <div class="properties">
+              <a
+                href=""
+                v-for="(item, i) in product.product_images"
+                v-if="i < 1"
+                :key="i"
+                @click.prevent="redirectProductDetail(product.slugs[0].url)"
+                class="img img-2 d-flex justify-content-center align-items-center"
+                :style="{
+                  'background-image':
+                    'url(' + '/assets/image_product/' + item.image + ')',
+                }"
+              >
+                <div
+                  class="icon d-flex justify-content-center align-items-center"
+                >
+                  <span class="icon-search2"></span>
                 </div>
-              </div>
-              <div class="item">
-                <div class="properties">
+              </a>
+              <div class="text p-3">
+                <span v-if="product.type_id === 6" class="status rent"
+                  >Tin đặc biệt</span
+                >
+                <span v-else class="status sale">Tin vip</span>
+                <div style="height: 68px">
                   <a
-                    href="#"
-                    class="img d-flex justify-content-center align-items-center"
-                    style="
-                      background-image: url('/frontend/images/properties-2.jpg');
-                    "
+                    href=""
+                    @click.prevent="redirectProductDetail(product.slugs[0].url)"
+                    >{{ product.title }}</a
                   >
-                    <div
-                      class="icon d-flex justify-content-center align-items-center"
-                    >
-                      <span class="icon-search2"></span>
-                    </div>
-                  </a>
-                  <div class="text p-3">
-                    <div class="d-flex">
-                      <span class="status rent">Rent</span>
-                      <div class="one">
-                        <h3><a href="#">North Parchmore Street</a></h3>
-                        <p>Apartment</p>
-                      </div>
-                      <div class="two">
-                        <span class="price">$2,000 <small>/ month</small></span>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-              </div>
-              <div class="item">
-                <div class="properties">
-                  <a
-                    href="#"
-                    class="img d-flex justify-content-center align-items-center"
-                    style="
-                      background-image: url('/frontend/images/properties-3.jpg');
-                    "
+                <hr />
+                <p class="bottom-area d-flex">
+                  <span
+                    ><i class="flaticon-selection"></i>
+                    {{ product.area }}m2</span
                   >
-                    <div
-                      class="icon d-flex justify-content-center align-items-center"
-                    >
-                      <span class="icon-search2"></span>
-                    </div>
-                  </a>
-                  <div class="text p-3">
-                    <span class="status sale">Sale</span>
-                    <div class="d-flex">
-                      <div class="one">
-                        <h3><a href="#">North Parchmore Street</a></h3>
-                        <p>Apartment</p>
-                      </div>
-                      <div class="two">
-                        <span class="price">$20,000</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="properties">
-                  <a
-                    href="#"
-                    class="img d-flex justify-content-center align-items-center"
-                    style="
-                      background-image: url('/frontend/images/properties-4.jpg');
-                    "
+                  <span class="ml-auto" style="font-size: 18px; color: #c12f25"
+                    >{{ (product.area * product.price) / 1000 }} tỷ</span
                   >
-                    <div
-                      class="icon d-flex justify-content-center align-items-center"
-                    >
-                      <span class="icon-search2"></span>
-                    </div>
-                  </a>
-                  <div class="text p-3">
-                    <span class="status sale">Sale</span>
-                    <div class="d-flex">
-                      <div class="one">
-                        <h3><a href="#">North Parchmore Street</a></h3>
-                        <p>Apartment</p>
-                      </div>
-                      <div class="two">
-                        <span class="price">$20,000</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="properties">
-                  <a
-                    href="#"
-                    class="img d-flex justify-content-center align-items-center"
-                    style="
-                      background-image: url('/frontend/images/properties-5.jpg');
-                    "
-                  >
-                    <div
-                      class="icon d-flex justify-content-center align-items-center"
-                    >
-                      <span class="icon-search2"></span>
-                    </div>
-                  </a>
-                  <div class="text p-3">
-                    <span class="status rent">Rent</span>
-                    <div class="d-flex">
-                      <div class="one">
-                        <h3><a href="#">North Parchmore Street</a></h3>
-                        <p>Apartment</p>
-                      </div>
-                      <div class="two">
-                        <span class="price">$900 <small>/ month</small></span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="properties">
-                  <a
-                    href="#"
-                    class="img d-flex justify-content-center align-items-center"
-                    style="
-                      background-image: url('/frontend/images/properties-6.jpg');
-                    "
-                  >
-                    <div
-                      class="icon d-flex justify-content-center align-items-center"
-                    >
-                      <span class="icon-search2"></span>
-                    </div>
-                  </a>
-                  <div class="text p-3">
-                    <span class="status sale">Sale</span>
-                    <div class="d-flex">
-                      <div class="one">
-                        <h3><a href="#">North Parchmore Street</a></h3>
-                        <p>Apartment</p>
-                      </div>
-                      <div class="two">
-                        <span class="price">$20,000</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                </p>
               </div>
             </div>
           </div>
@@ -483,98 +403,123 @@
 </template>
 
 <script>
-import {apiDomainUser} from '../../../config';
+import {apiDomainUser,getTokenUser} from "../../../config";
 export default {
-  data(){
-    return{
-      post:[],
-      product:[],
-      type:[],
-      categories:[],
-      province:[],
-      district:[],
-      ward:[],
-      seach:{
-        province:'0',
-        district:'0',
-        ward:'0'
+  data() {
+    return {
+      special:[],
+      post: [],
+      product: [],
+      type: [],
+      categories: [],
+      province: [],
+      district: [],
+      ward: [],
+      seach: {
+        province: "0",
+        district: "0",
+        ward: "0",
       },
-    }
+    };
   },
-  methods:{
-    getListPost(){
-      axios.get(apiDomainUser + 'post')
-      .then(res => {
-        if(res.data.status===true){
-          this.post = res.data.data;
-          localStorage.setItem('postHome',res.data.data);
-        }
-      })
-      .catch(e => {
-
-      })
+  methods: {
+    getListPost() {
+      axios
+        .get(apiDomainUser + "home/post/list")
+        .then((res) => {
+          if (res.data.status === true) {
+            this.post = res.data.data;
+            localStorage.setItem("postHome", res.data.data);
+          }
+        })
+        .catch((e) => {});
     },
-    getListCategories(){
-      axios.get(apiDomainUser + 'categories')
-      .then((res) => {
-        this.categories = res.data.data;
-      })
-      .catch((e) => {
-
-      })
+    getListCategories() {
+      axios
+        .get(apiDomainUser + "home/categories/list")
+        .then((res) => {
+          this.categories = res.data.data;
+        })
+        .catch((e) => {});
     },
-    getListProvince(){
-      axios.get(apiDomainUser + 'province/list')
-      .then((res) => {
-        this.province = res.data.data;
-      })
-      .catch((e) => {
-
-      })
+    getListProduct() {
+      axios
+        .get(apiDomainUser + "home/product/list")
+        .then((res) => {
+          this.product = [];
+          if (res.data.status) {
+            this.product = res.data.data.product;
+            this.special = res.data.data.special;
+            localStorage.setItem("productHome", res.data.data.product);
+            localStorage.setItem("specialHome", res.data.data.special);
+          }
+        })
+        .catch((e) => {});
     },
-    changeProvince(){
-      if(this.seach.province !== '0'){
-        let index = this.province.findIndex((item) => this.seach.province === item.id);
+    getListProvince() {
+      axios
+        .get(apiDomainUser + "home/province/list")
+        .then((res) => {
+          this.province = res.data.data;
+        })
+        .catch((e) => {});
+    },
+    changeProvince() {
+      if (this.seach.province !== "0") {
+        let index = this.province.findIndex(
+          (item) => this.seach.province === item.id
+        );
         this.district = this.province[index].districts;
-      }else{
+      } else {
         this.district = [];
       }
     },
-    changeDistrict(){
-      if(this.seach.district !== '0'){
-        let index = this.province.findIndex((item) => this.seach.province === item.id);
-        this.province[index].wards.map((item,index) => {
-          if(item.district_id===this.seach.district){
+    changeDistrict() {
+      if (this.seach.district !== "0") {
+        let index = this.province.findIndex(
+          (item) => this.seach.province === item.id
+        );
+        this.province[index].wards.map((item, index) => {
+          if (item.district_id === this.seach.district) {
             this.ward.push(item);
           }
-        })
-      }else{
+        });
+      } else {
         this.ward = [];
       }
     },
-    convertDate(date){
+    convertDate(date) {
       let timePresent = new Date();
       let dateParams = new Date(date);
-      return (timePresent.getDay() - dateParams.getDay()==0) ? 1 :timePresent.getDay() - dateParams.getDay();
+      return timePresent.getDay() - dateParams.getDay() == 0
+        ? 1
+        : timePresent.getDay() - dateParams.getDay();
     },
-    redirectDetailPost(url){
-      localStorage.setItem('urlDetailPost',url);
-      window.location.href = '/bai-viet/' + url;
-    }
+    redirectDetailPost(url) {
+      localStorage.setItem("urlDetailPost", url);
+      window.location.href = "/bai-viet/" + url;
+    },
+    redirectProductDetail(url) {
+      localStorage.setItem("urlProductDetail", url);
+      window.location.href = "/tin-dang/" + url;
+    },
   },
-  beforeCreate() {
-    
-  },
-  created(){
-    if(localStorage.getItem('postHome')!==null){
-      this.post = localStorage.getItem('postHome');
+  beforeCreate() {},
+  created() {
+    if (
+      localStorage.getItem("postHome") !== null &&
+      localStorage.getItem("productHome") !== null &&
+      localStorage.getItem('specialHome') !==null
+    ) {
+      this.post = localStorage.getItem("postHome");
+      this.product = localStorage.getItem("productHome");
+      this.special = localStorage.getItem('specialHome');
     }
     this.getListPost();
     this.getListCategories();
+    this.getListProduct();
     this.getListProvince();
   },
-  mounted() {
-
-  },
+  mounted() {},
 };
 </script>

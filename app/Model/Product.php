@@ -72,6 +72,6 @@ class Product extends Model
 
     public function Slugs()
     {
-        return $this->hasMany('App\Model\Slugs','product_id','id');
+        return $this->hasMany('App\Model\Slug','product_id','id');
     }
 }

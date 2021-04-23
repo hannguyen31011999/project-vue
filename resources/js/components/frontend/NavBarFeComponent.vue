@@ -38,7 +38,7 @@
         <div class="collapse navbar-collapse" id="ftco-nav">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <a href="index.html" class="nav-link">Trang chủ</a>
+              <a href="/" class="nav-link">Trang chủ</a>
             </li>
             <li class="nav-item dropdown">
               <a
@@ -52,7 +52,7 @@
               >
               <div class="dropdown-menu"  style="font-size: 13px" >
                 <a class="dropdown-item" v-for="(item,index) in categories"
-                :key="index" href="#" >{{item.categories_name}}</a>
+                :key="index" href="" @click.prevent="redirectListProduct(item.url)" >{{item.categories_name}}</a>
               </div>
             </li>
             <li class="nav-item"><a href="/bai-viet" class="nav-link">Tin tức</a></li>
@@ -100,22 +100,24 @@ export default {
   data(){
     return{
       categories:[
-
       ],
       user:{
-
-      }
+      },
     }
   },
   methods:{
     getListCategories(){
-      axios.get(apiDomainUser + 'categories')
+      axios.get(apiDomainUser + 'home/categories/list')
       .then((res) => {
         this.categories = res.data.data;
       })
       .catch((e) => {
 
       })
+    },
+    redirectListProduct(url){
+      localStorage.setItem('listProductUrl',url);
+      window.location.href = "/" + url;
     },
     getUser(token){
       axios.get(apiDomainUser + 'user?token='+token)

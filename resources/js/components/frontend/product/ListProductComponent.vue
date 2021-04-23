@@ -1,47 +1,53 @@
 <template>
   <div>
     <navbarHome></navbarHome>
+    <!-- product -->
     <section class="ftco-section bg-light">
       <div class="container">
-        <div class="container-fluid">
-          <div class="row">
-            <div
-              class="col-md-4 ftco-animate"
-              v-for="(item, index) in post"
-              :key="index"
-            >
-              <div class="properties">
-                <a
-                  href=""
-                  @click.prevent="redirectDetailPost(item.url)"
-                  class="img img-2 d-flex justify-content-center align-items-center"
-                  :style="{
-                    'background-image':
-                      'url(' + '/assets/image_post/' + item.image + ')',
-                  }"
+        <div class="row">
+          <div class="col-md-4 ftco-animate" v-for="(product,index) in products" :key="index">
+            <div class="properties">
+              <a
+                v-for="(item, i) in product.product_images"
+                v-if="i < 1"
+                :key="i"
+                href=""
+                class="img img-2 d-flex justify-content-center align-items-center"
+                @click.prevent="redirectProductDetail(product.slugs[0].url)"
+                :style="{
+                  'background-image':
+                    'url(' + '/assets/image_product/' + item.image + ')',
+                }"
+              >
+                <div
+                  class="icon d-flex justify-content-center align-items-center"
                 >
-                  <div
-                    class="icon d-flex justify-content-center align-items-center"
-                  >
-                    <span class="icon-search2"></span>
-                  </div>
-                </a>
-                <div class="text p-3">
-                  <div style="height: 40px">
-                    <a href="" @click.prevent="redirectDetailPost(item.url)">{{
-                      item.title
-                    }}</a>
-                  </div>
-                  <hr />
-                  <p class="bottom-area d-flex">
-                    <span>{{ compactDate(item.created_at) }} {{ item.fullname }}</span>
-                  </p>
+                  <span class="icon-search2"></span>
                 </div>
+              </a>
+              <div class="text p-3">
+                <span class="status rent" v-if="product.type_id===6">Tin đặc biệt</span>
+                <span class="status sale" v-if="product.type_id > 2 && product.type_id < 6">Tin vip</span>
+                <div style="height:68px;">
+                  <a href="" 
+                    @click.prevent="redirectProductDetail(product.slugs[0].url)">
+                    {{ product.title }}
+                  </a>
+                </div>
+                <hr />
+                <p class="bottom-area d-flex">
+                  <span
+                    ><i class="flaticon-selection"></i>
+                    {{ product.area }}m2</span
+                  >
+                  <span class="ml-auto" style="font-size: 18px; color: #c12f25"
+                    >{{ (product.area * product.price) / 1000 }} tỷ</span
+                  >
+                </p>
               </div>
             </div>
           </div>
         </div>
-
         <div class="row mt-5">
           <div class="col text-center">
             <nav aria-label="Page navigation example" style="margin-top: 5px">
@@ -82,7 +88,10 @@
                   >
                 </li>
                 <li id="last" class="page-item">
-                  <a class="page-link" @click.prevent="changePage(0)" href=""
+                  <a
+                    class="page-link"
+                    @click.prevent="changePage(0)"
+                    href=""
                     >Next</a
                   >
                 </li>
@@ -92,6 +101,7 @@
         </div>
       </div>
     </section>
+    <!-- end product -->
     <footerHome></footerHome>
     <registerComponent></registerComponent>
     <loginComponent></loginComponent>
@@ -103,39 +113,25 @@ import { apiDomainUser } from "../../../config";
 export default {
   data() {
     return {
-      post: [],
+      products: [],
       pagination: {},
     };
   },
   methods: {
-    getListPost() {
+    getListProductByCategories(url) {
       axios
-        .get(apiDomainUser + "post/list")
+        .get(apiDomainUser + "product/list/" + url)
         .then((res) => {
-          if (res.data.status) {
-            if (res.data.data.last_page === 1) {
-              $("#last").addClass("disabled");
+            if (res.data.status) {
+                if (res.data.data.last_page === 1) {
+                    $("#last").addClass("disabled");
+                }
+                localStorage.setItem('listProduct',res.data.data.data);
+                this.products = res.data.data.data;
+                this.pagination = res.data.data;
             }
-            this.post = res.data.data.data;
-            this.pagination = res.data.data;
-            localStorage.setItem("paginationPost", res.data.data);
-          }
         })
-        .catch((e) => {});
-    },
-    compactDate(time) {
-      let date = new Date();
-      return (
-        date.getDay(time) +
-        "-" +
-        date.getMonth(time) +
-        "-" +
-        date.getFullYear(time)
-      );
-    },
-    redirectDetailPost(url) {
-      localStorage.setItem("urlDetailPost", url);
-      window.location.href = "/bai-viet/" + url;
+        .then((e) => {});
     },
     changePage(page) {
       if (page === 0) {
@@ -180,9 +176,9 @@ export default {
     },
     getData(page) {
       axios
-        .get(apiDomainUser + "post/list" + "?page=" + page)
+        .get(listWardUrl + getToken() + "&page=" + page)
         .then((res) => {
-          this.post = res.data.data.data;
+          this.products = res.data.data.data;
           this.pagination = res.data.data;
           if (
             this.pagination.current_page === 1 &&
@@ -193,12 +189,18 @@ export default {
         })
         .catch((e) => {});
     },
+    redirectProductDetail(url) {
+      localStorage.setItem("urlProductDetail", url);
+      window.location.href = "/tin-dang/" + url;
+    },
   },
   created() {
-    if (localStorage.getItem("listPost") !== null) {
-      this.post = localStorage.getItem("listPost");
+    if (localStorage.getItem("listProductUrl") !== null) {
+      this.getListProductByCategories(localStorage.getItem("listProductUrl"));
     }
-    this.getListPost();
+    if(localStorage.getItem('listProduct')!==null){
+      this.products = localStorage.getItem('listProduct');
+    }
   },
   mounted() {},
 };

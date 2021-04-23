@@ -99,29 +99,33 @@ Route::group(['middleware' => 'auth.jwt','namespace'=>'backend\api','prefix'=>'a
 
 // api user
 Route::group(['namespace'=>'frontend\api'],function(){
-    // categories
-    Route::get('/categories','ApiHomeController@getListCategories');
-
-    // province list
-    Route::get('/province/list','ApiHomeController@getListProvince');
-
-    // post
-    Route::get('/post','ApiHomeController@getListPost');
-
+    // home
+    Route::group(['prefix'=>'home'],function(){
+        // categories
+        Route::get('/categories/list','ApiHomeController@getListCategories');
+        // province list
+        Route::get('/province/list','ApiHomeController@getListProvince');
+        // post
+        Route::get('/post/list','ApiHomeController@getListPost');
+        // list product
+        Route::get('/product/list','ApiHomeController@getListProduct');
+    });
+    
     // list post
     Route::get('/post/list','ApiPostController@index');
-
     // post detail
     Route::get('/post/detail/{url}','ApiPostController@getPostDetail');
 
+
     // register
     Route::post('/register','ApiHomeController@registerUser');
-
     // login
     Route::post('/login','ApiHomeController@loginUser');
-
+    // logout user
+    Route::get('/logout','ApiHomeController@logoutUser');
     // get user
     Route::get('/user','ApiHomeController@getUserLogin');
+
 
     // create product
     Route::get('/product','ApiCreateProductController@getList');
@@ -133,6 +137,8 @@ Route::group(['namespace'=>'frontend\api'],function(){
     // response checkout
     Route::get('/dang-tin-rao-ban','ApiCheckoutController@returnResult');
     
-    // logout user
-    Route::get('/logout','ApiHomeController@logoutUser');
+
+    // product
+    // list by categories
+    Route::get('/product/list/{url}','ApiListProductController@index');
 });

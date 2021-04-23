@@ -223,8 +223,8 @@
                             </div>
                             <div class="form-group">
                                 <label for=""><span style="color:red;">*</span>Địa chỉ</label>
-                                <input type="text" class="form-control" v-model="form.address">
-                                <span style="color: red; margin-top: 5px">{{ errors.address }}</span>
+                                <input type="text" class="form-control" v-model="form.address_guest">
+                                <span style="color: red; margin-top: 5px">{{ errors.address_guest }}</span>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -306,7 +306,7 @@
                         <div class="col-md-9">
                         </div>
                         <div class="col-md-3">
-                            <button type="submit" class="btn btn-success">Xác nhận đăng tin</button>
+                            <button type="submit" id="submit-checkout" class="btn btn-success">Xác nhận đăng tin</button>
                         </div>
                     </div>
                 </div>
@@ -382,7 +382,7 @@ export default {
                 juridical:'',
                 user_id:'',
                 fullname:'',
-                address:'',
+                address_guest:'',
                 phone:'',
                 email:'',
                 image:[],
@@ -493,6 +493,7 @@ export default {
             this.form.image.push(e.target.files[0]);
         },
         createOrder(){
+            $('#submit-checkout').attr('disable','disable');
             const config = {
                 headers: { 'content-type': 'multipart/form-data' }
             }
@@ -519,6 +520,7 @@ export default {
             formData.append('user_id',this.form.user_id);
             formData.append('fullname',this.form.fullname);
             formData.append('address',this.form.address);
+            formData.append('address_guest',this.form.address_guest);
             formData.append('phone',this.form.phone);
             formData.append('email',this.form.email);
             for (let i = 0; i < this.form.image.length; i++) {
@@ -527,11 +529,11 @@ export default {
             axios.post(apiDomainUser + 'checkout/create',formData,config)
             .then(res => {
                 this.errors = {};
-                console.log(res.data);
                 if(res.data.status){
-                    localStorage.setItem('checkout_success','Cảm ơn quý khách đã sử dụng dịch vụ');
+                    localStorage.setItem('checkout_success','Quý khách vui lòng kiểm tra mail để kiểm tra thanh toán');
                     window.location.href = res.data.data;
                 }else{
+                    $('#submit-checkout').removeAttr('disable');
                     if(res.data.limit!==null){
                         this.limitImage = res.data.limit
                     }else{
@@ -540,11 +542,26 @@ export default {
                         }
                     }
                 }
-            },alert('Đang trong quá trình xử lý xin vui lòng đừng tắt web'))
+            })
             .catch(e => {
 
             })
-        }
+        },
+        getUser(token){
+        axios.get(apiDomainUser + 'user?token='+token)
+        .then((res) => {
+            if(res.data.status){
+                this.form.fullname = res.data.data.fullname;
+                this.form.address_guest = res.data.data.address;
+                this.form.phone = res.data.data.phone;
+                this.form.email = res.data.data.email;
+                this.form.user_id = res.data.data.id;
+            }
+        })
+        .catch((e) => {
+
+        })
+        },
     },
     created(){
         this.getList();
@@ -552,6 +569,9 @@ export default {
             alert(localStorage.getItem('checkout_success'));
             localStorage.removeItem('checkout_success');
             window.location.href = '/dang-tin-rao-ban';
+        }
+        if(getTokenUser()!==null){
+            this.getUser(getTokenUser());
         }
     },
     mounted(){
