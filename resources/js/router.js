@@ -24,7 +24,7 @@ import DetailPostComponent from './components/frontend/post/DetailPostComponent.
 import PostComponent from './components/frontend/post/PostComponent.vue';
 import CreateProductComponent from './components/frontend/product/CreateProductComponent.vue';
 import ListProductComponent from './components/frontend/product/ListProductComponent.vue';
-
+import DetailProductComponent from './components/frontend/product/detail/DetailProductComponent.vue';
 export const routes = [
     // ADMIN
     {
@@ -110,5 +110,11 @@ export const routes = [
         name:'listProduct',
         path:'/:url',
         component:ListProductComponent
+    },
+    // detail product
+    {
+        name:'detailProduct',
+        path:'/tin-rao-ban/:url',
+        component:DetailProductComponent,
     }
 ]

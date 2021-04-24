@@ -72,4 +72,9 @@ class ViewFrontendController extends Controller
     {
         return view($this->module.'.product.list_product');
     }
+
+    public function detailProduct()
+    {
+        return view($this->module.'.product.detail_product');
+    }
 }

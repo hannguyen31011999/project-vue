@@ -50,4 +50,6 @@ Route::group(['namespace'=>'frontend'],function(){
     Route::get('/dang-tin-rao-ban','ViewFrontendController@viewCreateProduct');
     // list product
     Route::get('/{url}','ViewFrontendController@listProduct');
+    // detail product
+    Route::get('/tin-rao-ban/{url}','ViewFrontendController@detailProduct');
 });

@@ -141,4 +141,6 @@ Route::group(['namespace'=>'frontend\api'],function(){
     // product
     // list by categories
     Route::get('/product/list/{url}','ApiListProductController@index');
+    // product detail
+    Route::get('/product/detail/{url}','ApiProductDetailController@index');
 });

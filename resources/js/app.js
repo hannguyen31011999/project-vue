@@ -15,7 +15,9 @@ import ModalLoginComponent from './components/frontend/modal/ModalLoginComponent
 import {routes} from './router.js';
 import VueCookies from 'vue-cookies';
 import Vue from 'vue';
+import VueCarousel from '@chenfengyuan/vue-carousel';
 
+Vue.use(VueRouter);
 
 Vue.component('navbarComponent',NavbarComponent);
 Vue.component('menuComponent', MenuComponent);
@@ -23,8 +25,8 @@ Vue.component('navbarHome',NavbarFeComponent);
 Vue.component('footerHome', FooterComponent);
 Vue.component('registerComponent', ModalRegisterComponent);
 Vue.component('loginComponent', ModalLoginComponent);
+Vue.component('vue-carousel', VueCarousel);
 
-Vue.use(VueRouter);
 
 const router = new VueRouter({ mode: 'history', routes: routes});
 const app = new Vue(Vue.util.extend({ router })).$mount('#app');

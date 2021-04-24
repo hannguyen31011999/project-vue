@@ -47,9 +47,9 @@
             <div class="sidebar-box ftco-animate">
               <h3>Bài viết liên quan</h3>
               <div class="block-21 mb-4 d-flex" v-for="(item,index) in postRelation" :key="index">
-                <a class="blog-img mr-4" :style="{ 'background-image': 'url(' + '/assets/image_post/' + item.image + ')' }"></a>
+                <a class="blog-img mr-4" href="" @click.prevent="redirectDetailPost(item.url)" :style="{ 'background-image': 'url(' + '/assets/image_post/' + item.image + ')' }"></a>
                 <div class="text">
-                  <h3 class="heading"><a href="#">{{ item.title }}</a></h3>
+                  <h3 class="heading"><a href="" @click.prevent="redirectDetailPost(item.url)">{{ item.title }}</a></h3>
                   <div class="meta">
                     <div><span class="icon-calendar"></span> {{ convertDate(item.created_at) }} ngày trước</div>
                   </div>
@@ -116,6 +116,9 @@ export default {
       let dateParams = new Date(date);
       return (timePresent.getDay() - dateParams.getDay()==0) ? 1 :timePresent.getDay() - dateParams.getDay();
     },
+    redirectDetailPost(url){
+      window.location.href = '/bai-viet/' + url ;
+    }
   },
   created(){
     if(localStorage.getItem('detailPost') !==null && localStorage.getItem('relatePost') !==null){

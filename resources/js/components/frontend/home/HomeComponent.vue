@@ -501,7 +501,7 @@ export default {
     },
     redirectProductDetail(url) {
       localStorage.setItem("urlProductDetail", url);
-      window.location.href = "/tin-dang/" + url;
+      window.location.href = "/tin-rao-ban/" + url;
     },
   },
   beforeCreate() {},
