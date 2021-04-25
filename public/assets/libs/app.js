@@ -9593,6 +9593,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../config */ "./resources/js/config.js");
 //
 //
 //
@@ -9654,7 +9655,63 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      product: {},
+      type: {},
+      slug: {},
+      order: {},
+      seach: ''
+    };
+  },
+  methods: {
+    seachOrder: function seachOrder() {
+      var _this = this;
+
+      if (this.seach !== '') {
+        axios.get(_config__WEBPACK_IMPORTED_MODULE_0__["apiDomainUser"] + 'seach/order/' + this.seach).then(function (res) {
+          if (res.data.status) {
+            _this.product = res.data.data.product;
+            _this.type = res.data.data.type;
+            _this.slug = res.data.data.slug;
+            _this.order = res.data.data.order;
+          } else {
+            _this.product = {};
+            _this.type = {};
+            _this.slug = {};
+            _this.order = {};
+            _this.seach = '';
+            alert('Không tìm thấy tin đăng của quý khách');
+          }
+        })["catch"](function (e) {});
+      }
+    },
+    convertDatetime: function convertDatetime(time) {
+      var date = new Date(time);
+      return date.getDate() + '-' + parseInt(date.getMonth() + 1) + '-' + date.getFullYear();
+    },
+    convertCurrency: function convertCurrency(money) {
+      return money.toLocaleString('it-IT', {
+        style: 'currency',
+        currency: 'VND'
+      });
+    }
+  },
+  created: function created() {},
+  mounted: function mounted() {}
+});
 
 /***/ }),
 
@@ -57894,7 +57951,155 @@ var render = function() {
       _c("br"),
       _c("br"),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "container" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-1" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-10" }, [
+            _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _vm._v(
+                  "\r\n                        Tìm kiếm hóa đơn\r\n                    "
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c(
+                  "form",
+                  {
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.seachOrder()
+                      }
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-2" }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-7" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.seach,
+                                expression: "seach"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              placeholder: "Nhập mã hóa đơn của quý khách"
+                            },
+                            domProps: { value: _vm.seach },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.seach = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(0)
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("div", { staticClass: "table-responsive-md" }, [
+                      _c("table", { staticClass: "table" }, [
+                        _vm._m(1),
+                        _vm._v(" "),
+                        _c("tbody", [
+                          _vm.product.status !== undefined
+                            ? _c("td", [_vm._v(_vm._s(_vm.type.name))])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.product.status !== undefined
+                            ? _c("td", [
+                                _vm._v(
+                                  _vm._s(_vm.convertCurrency(_vm.order.price))
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.product.status !== undefined
+                            ? _c("td", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.convertDatetime(_vm.product.date_start)
+                                  )
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.product.status !== undefined
+                            ? _c("td", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.convertDatetime(_vm.product.date_end)
+                                  )
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "a",
+                              {
+                                attrs: {
+                                  href: "../tin-rao-ban/" + _vm.slug.url
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.slug.url))]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _vm.product.status !== undefined &&
+                          _vm.product.status === 1
+                            ? _c("td", [_vm._v("Tin còn thời hạn")])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.product.status !== undefined &&
+                          _vm.product.status === 0
+                            ? _c("td", [_vm._v("Tin hết hạn")])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.product.status === undefined
+                            ? _c("td")
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.order.price !== undefined
+                            ? _c("td", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.convertCurrency(
+                                      _vm.order.total_date * _vm.order.price
+                                    )
+                                  )
+                                )
+                              ])
+                            : _vm._e()
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-1" })
+        ])
+      ]),
       _vm._v(" "),
       _c("br"),
       _c("br"),
@@ -57913,91 +58118,41 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-md-1" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-10" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v(
-                "\r\n                        Tìm kiếm hóa đơn\r\n                    "
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-2" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-7" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("input", {
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Nhập mã hóa đơn của quý khách"
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-2" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-success",
-                        attrs: { type: "submit" }
-                      },
-                      [_vm._v("Tìm kiếm")]
-                    )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  _c("div", { staticClass: "table-responsive-md" }, [
-                    _c("table", { staticClass: "table" }, [
-                      _c(
-                        "thead",
-                        {
-                          staticStyle: {
-                            "background-color": "rgb(5, 86, 153)",
-                            color: "white"
-                          }
-                        },
-                        [
-                          _c("th", [_vm._v("Mã hóa đơn")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Loại tin")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Giá tiền")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Ngày bắt đầu")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Ngày kết thúc")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Đường dẫn")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Trạng thái")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Tổng tiền(10% VAT)")])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("tbody")
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-1" })
+    return _c("div", { staticClass: "col-md-2" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c(
+          "button",
+          { staticClass: "btn btn-success", attrs: { type: "submit" } },
+          [_vm._v("Tìm kiếm")]
+        )
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "thead",
+      {
+        staticStyle: { "background-color": "rgb(5, 86, 153)", color: "white" }
+      },
+      [
+        _c("th", [_vm._v("Loại tin")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Giá tiền")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Ngày bắt đầu")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Ngày kết thúc")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Đường dẫn")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Trạng thái")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Tổng tiền(10% VAT)")])
+      ]
+    )
   }
 ]
 render._withStripped = true

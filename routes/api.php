@@ -143,4 +143,8 @@ Route::group(['namespace'=>'frontend\api'],function(){
     Route::get('/product/list/{url}','ApiListProductController@index');
     // product detail
     Route::get('/product/detail/{url}','ApiProductDetailController@index');
+
+    // seach
+    // seach order
+    Route::get('/seach/order/{id}','ApiSeachController@seachOrder');
 });
