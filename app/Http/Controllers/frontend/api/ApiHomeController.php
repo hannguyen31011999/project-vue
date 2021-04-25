@@ -57,12 +57,6 @@ class ApiHomeController extends Controller
     public function getListProduct()
     {
         $dateNow = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
-        $special = Product::where('date_end','>=',$dateNow)
-                            ->where('type_id','=',6)
-                            ->with(['ProductImages','Slugs'])
-                            ->orderBy('created_at','desc')
-                            ->take(2)
-                            ->get();
         $product = Product::where('date_end','>=',$dateNow)
                             ->where('type_id','=',6)
                             ->orWhere('type_id','=',3)
@@ -73,10 +67,7 @@ class ApiHomeController extends Controller
                             ->get();
         return response()->json([
             'status'=>true,
-            'data'=>[
-                'product'=>$product,
-                'special'=>$special
-            ],
+            'data'=>$product,
             'errors'=>null,
         ]);
     }

@@ -37,15 +37,12 @@
                   <div class="col-md-6 ftco-animate" v-for="(product,index) in relate" :key="index">
                     <div class="properties">
                     <a
-                        v-for="(item, i) in product.product_images"
-                        v-if="i < 1"
-                        :key="i"
                         href=""
                         class="img img-2 d-flex justify-content-center align-items-center"
                         @click.prevent="redirectProductDetail(product.slugs[0].url)"
                         :style="{
                         'background-image':
-                            'url(' + '/assets/image_product/' + item.image + ')',
+                            'url(' + '/assets/image_product/' + product.image + ')',
                         }"
                     >
                         <div
@@ -132,10 +129,16 @@ export default {
                 if(res.data.status){
                     this.product = res.data.data.product;
                     this.post = res.data.data.post;
-                    this.relate = res.data.data.relate;
-                    localStorage.setItem('detailProduct',res.data.data.product);
-                    localStorage.setItem('detailProductPost',res.data.data.post);
-                    localStorage.setItem('detailProductRelate',res.data.data.relate);
+                    // this.relate = res.data.data.relate;
+                    res.data.data.relate.map((item,index) => {
+                      this.relate.push(item);
+                      this.relate[index].product_images.map((img,i) => {
+                        if(i < 1){
+                          this.relate[index].image = img.image;
+                          delete this.relate[index].product_images;
+                        }
+                      });
+                    });
                     this.product.product_images.map((item,index) => {
                         this.data.push('<div class="example-slide"><img src="/assets/image_product/'+ item.image +'" height="350" width="730"></div>');
                     });
@@ -145,10 +148,10 @@ export default {
 
             })
         },
-        convertDate(date){
-            let timePresent = new Date();
-            let dateParams = new Date(date);
-            return (timePresent.getDay() - dateParams.getDay()==0) ? 1 :timePresent.getDay() - dateParams.getDay();
+        convertDate(date) {
+          let timePresent = new Date();
+          let dateParams = new Date(date);
+          return (timePresent.getDate() - dateParams.getDate()==0) ? 1 :timePresent.getDate() - dateParams.getDate();
         },
         redirectDetailPost(url){
             window.location.href = '/bai-viet/' + url ;
@@ -161,11 +164,6 @@ export default {
     created(){
         if(localStorage.getItem('urlProductDetail')!==null){
             this.getListProduct(localStorage.getItem('urlProductDetail'));
-        }
-        if(localStorage.getItem('detailProduct')!==null&&localStorage.getItem('detailProductPost')!==null&&localStorage.getItem('detailProductRelate')!==null){
-            this.product = localStorage.getItem('detailProduct');
-            this.post = localStorage.getItem('detailProductPost');
-            this.relate = localStorage.getItem('detailProductRelate');
         }
     },
     mounted(){

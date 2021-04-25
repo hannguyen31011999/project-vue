@@ -52,4 +52,6 @@ Route::group(['namespace'=>'frontend'],function(){
     Route::get('/{url}','ViewFrontendController@listProduct');
     // detail product
     Route::get('/tin-rao-ban/{url}','ViewFrontendController@detailProduct');
+    // filter order
+    Route::get('/tra-cuu/hoa-don','ViewFrontendController@viewSeachOrder');
 });

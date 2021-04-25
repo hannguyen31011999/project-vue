@@ -25,6 +25,7 @@ import PostComponent from './components/frontend/post/PostComponent.vue';
 import CreateProductComponent from './components/frontend/product/CreateProductComponent.vue';
 import ListProductComponent from './components/frontend/product/ListProductComponent.vue';
 import DetailProductComponent from './components/frontend/product/detail/DetailProductComponent.vue';
+import SeachOrderComponent from './components/frontend/seach/SeachOrderComponent.vue';
 export const routes = [
     // ADMIN
     {
@@ -116,5 +117,11 @@ export const routes = [
         name:'detailProduct',
         path:'/tin-rao-ban/:url',
         component:DetailProductComponent,
+    },
+    // seach order
+    {
+        name:'seachOrder',
+        path:'/tra-cuu/hoa-don',
+        component:SeachOrderComponent,
     }
 ]

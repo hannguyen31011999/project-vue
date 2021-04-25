@@ -1,50 +1,6 @@
 <template>
   <div>
     <navbarHome></navbarHome>
-    <!-- slider -->
-    <section class="home-slider owl-carousel">
-      <div
-        class="slider-item"
-        style="background-image: url('/frontend/images/bg_1.jpg')"
-      >
-        <div class="overlay"></div>
-        <div class="container">
-          <div
-            class="row no-gutters slider-text align-items-md-end align-items-center justify-content-end"
-          >
-            <div class="col-md-6 text p-4 ftco-animate">
-              <h1 class="mb-3">{{ special[0].title }}</h1>
-              <span class="price"><i class="flaticon-selection"></i> {{ special[0].area }}m2 {{ special[0].price * special[0].area / 1000 }} tỷ</span>
-              <a href="" @click.prevent="redirectProductDetail(special[0].slugs[0].url)" class="btn-custom p-3 px-4 bg-primary"
-                >Chi tiết <span class="icon-plus ml-1"></span
-              ></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="slider-item"
-        style="background-image: url('/frontend/images/bg_2.jpg')"
-      >
-        <div class="overlay"></div>
-        <div class="container">
-          <div
-            class="row no-gutters slider-text align-items-md-end align-items-center justify-content-end"
-          >
-            <div class="col-md-6 text p-4 ftco-animate">
-              <h1 class="mb-3">{{ special[1].title }}</h1>
-              <span class="price"><i class="flaticon-selection"></i> {{ special[1].area }}m2 {{ special[1].price * special[1].area / 1000 }} tỷ</span>
-              <a href="" @click.prevent="redirectProductDetail(special[1].slugs[1].url)" class="btn-custom p-3 px-4 bg-primary"
-                >Chi tiết <span class="icon-plus ml-1"></span
-              ></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- end slider -->
-
     <!-- seach -->
     <section class="ftco-search">
       <div class="container">
@@ -223,8 +179,8 @@
         <div class="container-fluid">
           <div class="row">
             <div
-              class="col-md-4 ftco-animate"
-              v-for="(item, index) in post"
+              class="col-md-4 ftco-animate fadeInUp ftco-animated"
+              v-for="(item,index) in posts"
               :key="index"
             >
               <div class="properties">
@@ -280,21 +236,18 @@
       <div class="container-fluid">
         <div class="row">
           <div
-            class="col-md-4 ftco-animate"
-            v-for="(product, index) in product"
+            class="col-md-4 ftco-animate fadeInUp ftco-animated"
+            v-for="(product, index) in products"
             :key="index"
           >
             <div class="properties">
               <a
                 href=""
-                v-for="(item, i) in product.product_images"
-                v-if="i < 1"
-                :key="i"
                 @click.prevent="redirectProductDetail(product.slugs[0].url)"
                 class="img img-2 d-flex justify-content-center align-items-center"
                 :style="{
                   'background-image':
-                    'url(' + '/assets/image_product/' + item.image + ')',
+                    'url(' + '/assets/image_product/' + product.image + ')',
                 }"
               >
                 <div
@@ -356,7 +309,7 @@
                 <div class="block-18 text-center">
                   <div class="text">
                     <strong class="number" data-number="9000">0</strong>
-                    <span>User</span>
+                    <span>Khách hàng</span>
                   </div>
                 </div>
               </div>
@@ -366,7 +319,7 @@
                 <div class="block-18 text-center">
                   <div class="text">
                     <strong class="number" data-number="10000">0</strong>
-                    <span>Product</span>
+                    <span>Sản phẩm</span>
                   </div>
                 </div>
               </div>
@@ -376,7 +329,7 @@
                 <div class="block-18 text-center">
                   <div class="text">
                     <strong class="number" data-number="1000">0</strong>
-                    <span>Bản tin</span>
+                    <span>Tin tức</span>
                   </div>
                 </div>
               </div>
@@ -385,7 +338,7 @@
               >
                 <div class="block-18 text-center">
                   <div class="text">
-                    <strong class="number" data-number="100">0</strong>
+                    <strong class="number" data-number="35000">0</strong>
                     <span>Lượt ghé thăm</span>
                   </div>
                 </div>
@@ -407,9 +360,8 @@ import {apiDomainUser,getTokenUser} from "../../../config";
 export default {
   data() {
     return {
-      special:[],
-      post: [],
-      product: [],
+      posts: [],
+      products: [],
       type: [],
       categories: [],
       province: [],
@@ -428,8 +380,9 @@ export default {
         .get(apiDomainUser + "home/post/list")
         .then((res) => {
           if (res.data.status === true) {
-            this.post = res.data.data;
-            localStorage.setItem("postHome", res.data.data);
+            res.data.data.map((item) => {
+              this.posts.push(item);
+            })
           }
         })
         .catch((e) => {});
@@ -446,12 +399,16 @@ export default {
       axios
         .get(apiDomainUser + "home/product/list")
         .then((res) => {
-          this.product = [];
-          if (res.data.status) {
-            this.product = res.data.data.product;
-            this.special = res.data.data.special;
-            localStorage.setItem("productHome", res.data.data.product);
-            localStorage.setItem("specialHome", res.data.data.special);
+          if (res.data.status) { 
+            res.data.data.map((item,index) => {
+              this.products.push(item);
+              this.products[index].product_images.map((img,i) => {
+                if(i < 1){
+                  this.products[index].image = img.image;
+                  delete this.products[index].product_images;
+                }
+              });
+            });
           }
         })
         .catch((e) => {});
@@ -491,9 +448,7 @@ export default {
     convertDate(date) {
       let timePresent = new Date();
       let dateParams = new Date(date);
-      return timePresent.getDay() - dateParams.getDay() == 0
-        ? 1
-        : timePresent.getDay() - dateParams.getDay();
+      return (timePresent.getDate() - dateParams.getDate()==0) ? 1 :timePresent.getDate() - dateParams.getDate();
     },
     redirectDetailPost(url) {
       localStorage.setItem("urlDetailPost", url);
@@ -504,22 +459,17 @@ export default {
       window.location.href = "/tin-rao-ban/" + url;
     },
   },
-  beforeCreate() {},
+  beforeCreate() {
+  },
   created() {
-    if (
-      localStorage.getItem("postHome") !== null &&
-      localStorage.getItem("productHome") !== null &&
-      localStorage.getItem('specialHome') !==null
-    ) {
-      this.post = localStorage.getItem("postHome");
-      this.product = localStorage.getItem("productHome");
-      this.special = localStorage.getItem('specialHome');
-    }
     this.getListPost();
     this.getListCategories();
     this.getListProduct();
     this.getListProvince();
+    console.log(this.products);
   },
-  mounted() {},
+  mounted() {
+    
+  },
 };
 </script>

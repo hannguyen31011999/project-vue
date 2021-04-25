@@ -14,16 +14,23 @@ class ApiListProductController extends Controller
     public function index($url)
     {
         $categories = Categories::where('url','like','%'.$url.'%')->first();
-        $date = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
-        $product = Product::where('categories_id','=',$categories->id)
-                            ->where('status','!=',0)
-                            ->where('date_end','>=',$date)
-                            ->with(['ProductImages','Slugs'])
-                            ->orderBy('created_at','desc')
-                            ->paginate(6);
+        if($categories!=null){
+            $date = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+            $product = Product::where('categories_id','=',$categories->id)
+                                ->where('status','!=',0)
+                                ->where('date_end','>=',$date)
+                                ->with(['ProductImages','Slugs'])
+                                ->orderBy('created_at','desc')
+                                ->paginate(6);
+            return response()->json([
+                'status'=>true,
+                'data'=>$product,
+                'errors'=>null
+            ]);
+        }
         return response()->json([
-            'status'=>true,
-            'data'=>$product,
+            'status'=>false,
+            'data'=>null,
             'errors'=>null
         ]);
     }

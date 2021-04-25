@@ -30,7 +30,7 @@ if (!function_exists('limitImage')) {
 if (!function_exists('randomCode')) {
     function randomCode($length)
     {
-    	$characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    	$characters = '123456789';
 		$charactersLength = strlen($characters);
 		$random = '';
 		for ($i = 0; $i < $length; $i++) {

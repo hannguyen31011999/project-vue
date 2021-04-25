@@ -56,7 +56,7 @@
               </div>
             </li>
             <li class="nav-item"><a href="/bai-viet" class="nav-link">Tin tức</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Liên hệ</a></li>
+            <li class="nav-item"><a href="/tra-cuu/hoa-don" class="nav-link">Tra cứu</a></li>
             <li class="nav-item dropdown">
               <a 
                 href="#" 

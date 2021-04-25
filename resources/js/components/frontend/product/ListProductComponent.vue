@@ -5,18 +5,15 @@
     <section class="ftco-section bg-light">
       <div class="container">
         <div class="row">
-          <div class="col-md-4 ftco-animate" v-for="(product,index) in products" :key="index">
+          <div class="col-md-4 ftco-animate fadeInUp ftco-animated" v-for="(product,index) in products" :key="index">
             <div class="properties">
               <a
-                v-for="(item, i) in product.product_images"
-                v-if="i < 1"
-                :key="i"
                 href=""
                 class="img img-2 d-flex justify-content-center align-items-center"
                 @click.prevent="redirectProductDetail(product.slugs[0].url)"
                 :style="{
                   'background-image':
-                    'url(' + '/assets/image_product/' + item.image + ')',
+                    'url(' + '/assets/image_product/' + product.image + ')',
                 }"
               >
                 <div
@@ -126,9 +123,16 @@ export default {
                 if (res.data.data.last_page === 1) {
                     $("#last").addClass("disabled");
                 }
-                localStorage.setItem('listProduct',res.data.data.data);
                 this.products = res.data.data.data;
                 this.pagination = res.data.data;
+                this.products.map((item,index) => {
+                  this.products[index].product_images.map((img,i) => {
+                    if(i < 1){
+                      this.products[index].image = img.image;
+                      delete this.products[index].product_images;
+                    }
+                  })
+                });
             }
         })
         .then((e) => {});

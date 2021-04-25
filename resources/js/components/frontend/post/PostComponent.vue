@@ -6,8 +6,8 @@
         <div class="container-fluid">
           <div class="row">
             <div
-              class="col-md-4 ftco-animate"
-              v-for="(item, index) in post"
+              class="col-md-4 ftco-animate fadeInUp ftco-animated"
+              v-for="(item, index) in posts"
               :key="index"
             >
               <div class="properties">
@@ -99,11 +99,11 @@
 </template>
 
 <script>
-import { apiDomainUser } from "../../../config";
+import { apiDomainUser , getMonth} from "../../../config";
 export default {
   data() {
     return {
-      post: [],
+      posts: [],
       pagination: {},
     };
   },
@@ -116,9 +116,8 @@ export default {
             if (res.data.data.last_page === 1) {
               $("#last").addClass("disabled");
             }
-            this.post = res.data.data.data;
+            this.posts =res.data.data.data
             this.pagination = res.data.data;
-            localStorage.setItem("paginationPost", res.data.data);
           }
         })
         .catch((e) => {});
@@ -126,9 +125,9 @@ export default {
     compactDate(time) {
       let date = new Date();
       return (
-        date.getDay(time) +
+        date.getDate(time) +
         "-" +
-        date.getMonth(time) +
+        parseInt(date.getMonth(time) + 1) +
         "-" +
         date.getFullYear(time)
       );
@@ -195,9 +194,6 @@ export default {
     },
   },
   created() {
-    if (localStorage.getItem("listPost") !== null) {
-      this.post = localStorage.getItem("listPost");
-    }
     this.getListPost();
   },
   mounted() {},

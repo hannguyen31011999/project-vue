@@ -103,28 +103,22 @@ export default {
         if(res.data.status){
           this.post = res.data.data.post;
           this.postRelation = res.data.data.relate;
-          localStorage.setItem('detailPost',res.data.data.post);
-          localStorage.setItem('relatePost',res.data.data.relate);
         }
       })
       .catch(e => {
 
       })
     },
-    convertDate(date){
+    convertDate(date) {
       let timePresent = new Date();
       let dateParams = new Date(date);
-      return (timePresent.getDay() - dateParams.getDay()==0) ? 1 :timePresent.getDay() - dateParams.getDay();
+      return (timePresent.getDate() - dateParams.getDate()==0) ? 1 :timePresent.getDate() - dateParams.getDate();
     },
     redirectDetailPost(url){
       window.location.href = '/bai-viet/' + url ;
     }
   },
   created(){
-    if(localStorage.getItem('detailPost') !==null && localStorage.getItem('relatePost') !==null){
-      this.post = localStorage.getItem('detailPost');
-      this.postRelation = localStorage.getItem('relatePost');
-    }
     this.getDetailPost();
   }
 }

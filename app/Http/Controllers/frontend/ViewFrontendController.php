@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Model\Product;
 use App\Model\ProductImage;
 use App\Model\Order;
+use App\Model\Categories;
+use App\Model\Post;
+use App\Model\Slug;
 use Mail;
 use Session;
 class ViewFrontendController extends Controller
@@ -18,9 +21,15 @@ class ViewFrontendController extends Controller
         return view($this->module.'.home.index_home');
     }
 
-    public function viewPostDetail()
+    public function viewPostDetail($url)
     {
-        return view($this->module.'.post.detail_post');
+        $post = Post::where('url','like','%'.$url.'%')->first();
+        if($post!=null){
+            return view($this->module.'.post.detail_post');
+        }else{
+            return view($this->module.'.errors.page_404');
+        }
+        
     }
 
     public function viewPost()
@@ -38,7 +47,7 @@ class ViewFrontendController extends Controller
                 $mail = [
                     'email'=>$order[0]->email,
                     'mess'=>'Thanh toán thành công',
-                    'code'=>$product->id
+                    'code'=>randomCode(9).$product->id
                 ];
                 Mail::send('frontend.mail.checkout_response',$mail,
                     function($messenger) use ($mail){
@@ -68,13 +77,28 @@ class ViewFrontendController extends Controller
         return view($this->module.'.product.create_product');
     }
 
-    public function listProduct()
+    public function listProduct($url)
     {
-        return view($this->module.'.product.list_product');
+        $categories = Categories::where('url','like','%'.$url.'%')->first();
+        if($categories!=null){
+            return view($this->module.'.product.list_product');
+        }else{
+            return view($this->module.'.errors.page_404');
+        }
     }
 
-    public function detailProduct()
+    public function detailProduct($url)
     {
-        return view($this->module.'.product.detail_product');
+        $slug = Slug::where('url','like','%'.$url.'%')->first();
+        if($slug!=null){
+            return view($this->module.'.product.detail_product');
+        }else{
+            return view($this->module.'.errors.page_404');
+        }
+    }
+
+    public function viewSeachOrder()
+    {
+        return view($this->module.'.seach.seach_order');
     }
 }
