@@ -17,6 +17,12 @@ import ListDistrictComponent from './components/backend/district/ListDistrictCom
 import ListWardComponent from './components/backend/ward/ListWardComponent.vue';
 // post
 import ListPostComponent from './components/backend/post/ListPostComponent.vue';
+// product
+import ListProductsComponent from './components/backend/product/ListProductsComponent.vue'; 
+// image
+import ListImagesComponent from './components/backend/image/ListImagesComponent.vue';
+// order
+import ListOrdersComponent from './components/backend/order/ListOrdersComponent.vue';
 
 // USER
 import HomeComponent from './components/frontend/home/HomeComponent.vue';
@@ -79,6 +85,24 @@ export const routes = [
         name:'list_post',
         path:'/admin/post',
         component:ListPostComponent
+    },
+    // product
+    {
+        name:'list_product',
+        path:'/admin/product',
+        component:ListProductsComponent
+    },
+    // image
+    {
+        name:'list_image',
+        path:'/admin/image',
+        component:ListImagesComponent
+    },
+    // order
+    {
+        name:'list_order',
+        path:'/admin/order',
+        component:ListOrdersComponent
     },
 
     // USER

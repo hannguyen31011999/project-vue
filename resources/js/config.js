@@ -31,7 +31,15 @@ export const seachWardUrl = apiDomain + 'ward/seach?token=';
 export const createPostUrl = apiDomain + 'post/create?token=';
 export const listPostUrl = apiDomain + 'post/list?token=';
 export const seachPostUrl = apiDomain + 'post/seach?token=';
-
+// product
+export const listProductUrl = apiDomain + 'product/list?token=';
+export const seachProductUrl = apiDomain + 'product/seach?token=';
+// image
+export const listImageUrl = apiDomain + 'image/list?token=';
+export const seachImageUrl = apiDomain + 'image/seach?token=';
+// order
+export const listOrderUrl = apiDomain + 'order/list?token=';
+export const seachOrderUrl = apiDomain + 'order/seach?token=';
 
 
 import VueCookies from 'vue-cookies';

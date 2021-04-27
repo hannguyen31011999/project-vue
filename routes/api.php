@@ -95,6 +95,34 @@ Route::group(['middleware' => 'auth.jwt','namespace'=>'backend\api','prefix'=>'a
         Route::delete('/delete/{id}','ApiPostController@destroy');
         Route::get('/seach','ApiPostController@seach');
     });
+
+    // product
+    Route::group(['prefix'=>'product'],function(){
+        Route::get('/list','ApiProductController@index');
+        Route::get('/edit/{id}','ApiProductController@edit');
+        Route::post('/update/{id}','ApiProductController@update');
+        Route::delete('/delete/{id}','ApiProductController@destroy');
+        Route::get('/seach','ApiProductController@seach');
+    });
+
+    // product_image
+    Route::group(['prefix'=>'image'],function(){
+        Route::get('/list','ApiProductImageController@index');
+        Route::get('/edit/{id}','ApiProductImageController@edit');
+        Route::post('/update/{id}','ApiProductImageController@update');
+        Route::delete('/delete/{id}','ApiProductImageController@destroy');
+        Route::get('/seach','ApiProductImageController@seach');
+    });
+
+    // order
+    Route::group(['prefix'=>'order'],function(){
+        Route::get('/list','ApiOrderController@index');
+        Route::get('/edit/{id}','ApiOrderController@edit');
+        Route::post('/update/{id}','ApiOrderController@update');
+        Route::delete('/delete/{id}','ApiOrderController@destroy');
+        Route::get('/seach','ApiOrderController@seach');
+    });
+
 });
 
 // api user

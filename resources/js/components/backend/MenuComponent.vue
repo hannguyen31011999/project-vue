@@ -55,13 +55,13 @@
               <span class="menu-arrow"></span>
             </a>
             <ul class="nav-second-level" aria-expanded="false">
-              <li><a href="">Tin đăng bán</a></li>
-              <li><a href="">Kho hình ảnh</a></li>
+              <li><a href="" @click.prevent="redirectURL(9)">Tin đăng bán</a></li>
+              <li><a href="" @click.prevent="redirectURL(10)">Kho hình ảnh</a></li>
             </ul>
           </li>
 
           <li>
-            <a href="javascript: void(0);" class="waves-effect">
+            <a href="" @click.prevent="redirectURL(11)" class="waves-effect">
               <i class="fas fa-shopping-cart"></i>
               <span> Quản lý hóa đơn </span>
             </a>
@@ -140,10 +140,16 @@ export default {
           break;
         }
         case 9:{
-          
+          window.location.href = '/admin/product'
+          break;
         }
         case 10:{
-          
+          window.location.href = '/admin/image'
+          break;
+        }
+        case 11:{
+          window.location.href = '/admin/order'
+          break;
         }
         default:{
 

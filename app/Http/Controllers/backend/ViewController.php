@@ -53,4 +53,20 @@ class ViewController extends Controller
     {
         return view('backend.post.index_post');
     }
+
+    public function viewProduct()
+    {
+        return view('backend.product.index_product');
+    }
+
+    public function viewImage()
+    {
+        return view('backend.image.index_image');
+    }
+
+    public function viewOrder()
+    {
+        return view('backend.order.index_order');
+    }
+
 }
