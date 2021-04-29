@@ -44,7 +44,9 @@ class ApiCheckoutController extends Controller
                 'address_guest'=>'required|max:254',
                 'phone'=>'required|numeric|regex:/(0)[0-9]{9}/',
                 'email'=>'required|max:100|email',
-                'image'=>'required'
+                'image'=>'required',
+                'facade'=>'numeric|max:5',
+                'access_road'=>'max:5',
             ],
             [
                 'type_id.required'=>'Vui lòng chọn loại tin',
@@ -77,7 +79,9 @@ class ApiCheckoutController extends Controller
                 'email.max'=>'Email quá dài',
                 'email.required'=>'Vui lòng nhập email',
                 'image.required'=>'Vui lòng chọn ảnh',
-                'image.image'=>'Ảnh có đuôi .jpeg,png,jpg'
+                'image.image'=>'Ảnh có đuôi .jpeg,png,jpg',
+                'facade.numeric'=>'Mặt tiền phải là số',
+                'access_road.max'=>'Đường vào tối đa 5 số'
             ]
         );
         if($validator->fails()){

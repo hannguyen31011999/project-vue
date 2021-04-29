@@ -466,7 +466,6 @@ export default {
     this.getListCategories();
     this.getListProduct();
     this.getListProvince();
-    console.log(this.products);
   },
   mounted() {
     

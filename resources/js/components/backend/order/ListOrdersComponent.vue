@@ -52,7 +52,7 @@
                         <th>Email</th>
                         <th>Total_date</th>
                         <th>Price</th>
-                        <th>created</th>
+                        <th>Created</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -65,7 +65,7 @@
                         <td>{{ item.email }}</td>
                         <td>{{ item.total_date }}</td>
                         <td>{{ item.price }}</td>
-                        <td>{{ item.created_at }}</td>
+                        <td>{{ converDateTime(item.created_at) }}</td>
                         <td>
                           <button
                             data-toggle="modal"
@@ -295,6 +295,10 @@ export default {
             }else{
                 this.getListOrder();
             }
+        },
+        converDateTime(time){
+            let date = new Date(time);
+            return date.getDate() + '-' + parseInt(date.getMonth()+1) + '-' + date.getFullYear();
         },
         changePage(page) {
             if (page === 0) {

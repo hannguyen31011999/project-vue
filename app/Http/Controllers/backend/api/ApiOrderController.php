@@ -18,7 +18,7 @@ class ApiOrderController extends Controller
     //  http://localhost:8000/api/admin/order/list
     public function index()
     {
-        $order = Order::paginate(10);
+        $order = Order::orderBy('created_at','desc')->paginate(10);
         return response()->json([
             'status'=>true,
             'data'=>$order,

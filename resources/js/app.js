@@ -16,8 +16,11 @@ import {routes} from './router.js';
 import VueCookies from 'vue-cookies';
 import Vue from 'vue';
 import VueCarousel from '@chenfengyuan/vue-carousel';
+import Chartkick from 'vue-chartkick'
+import Chart from 'chart.js'
 
 Vue.use(VueRouter);
+Vue.use(Chartkick.use(Chart));
 
 Vue.component('navbarComponent',NavbarComponent);
 Vue.component('menuComponent', MenuComponent);
@@ -26,7 +29,6 @@ Vue.component('footerHome', FooterComponent);
 Vue.component('registerComponent', ModalRegisterComponent);
 Vue.component('loginComponent', ModalLoginComponent);
 Vue.component('vue-carousel', VueCarousel);
-
 
 const router = new VueRouter({ mode: 'history', routes: routes});
 const app = new Vue(Vue.util.extend({ router })).$mount('#app');

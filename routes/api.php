@@ -123,6 +123,10 @@ Route::group(['middleware' => 'auth.jwt','namespace'=>'backend\api','prefix'=>'a
         Route::get('/seach','ApiOrderController@seach');
     });
 
+    // dashboard
+    Route::group(['prefix'=>'dashboard'],function(){
+        Route::get('/list','ApiDashBoardController@index');
+    });
 });
 
 // api user

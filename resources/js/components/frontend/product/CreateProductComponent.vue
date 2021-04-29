@@ -42,7 +42,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="title"><span style="color:red;">*</span>Giá</label>
-                                <input type="number" v-model="form.price" @change="onchangePrice()" class="form-control" placeholder="Nhập giá tiền triệu/m2">
+                                <input type="text" v-model="form.price" @change="onchangePrice()" class="form-control" placeholder="Nhập giá tiền triệu/m2">
                                 <span style="color: red; margin-top: 5px">{{ errors.price }}</span>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="title"><span style="color:red;">*</span>Diện tích</label>
-                                <input type="number" @change="onchangeArea()" v-model="form.area" class="form-control" placeholder="Nhập diện tích">
+                                <input type="text" @change="onchangeArea()" v-model="form.area" class="form-control" placeholder="Nhập diện tích">
                                 <span style="color: red; margin-top: 5px">{{ errors.area }}</span>
                             </div>
                             <div class="form-group">
@@ -124,7 +124,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Mặt tiền</label>
-                                <input type="number" class="form-control" v-model="form.facade">
+                                <input type="text" class="form-control" v-model="form.facade">
+                                <span style="color: red; margin-top: 5px">{{ errors.facade }}</span>
                             </div>
                             <div class="form-group">
                                 <label for="">Hướng nhà</label>
@@ -149,6 +150,7 @@
                             <div class="form-group">
                                 <label for="">Đường vào</label>
                                 <input type="number" class="form-control" v-model="form.access_road">
+                                <span style="color: red; margin-top: 5px">{{ errors.access_road }}</span>
                             </div>
                             <div class="form-group">
                                 <label for="">Hướng ban công</label>

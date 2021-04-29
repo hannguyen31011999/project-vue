@@ -40,7 +40,8 @@ export const seachImageUrl = apiDomain + 'image/seach?token=';
 // order
 export const listOrderUrl = apiDomain + 'order/list?token=';
 export const seachOrderUrl = apiDomain + 'order/seach?token=';
-
+// dashboard
+export const listDashBoardUrl = apiDomain + 'dashboard/list?token=';
 
 import VueCookies from 'vue-cookies';
 

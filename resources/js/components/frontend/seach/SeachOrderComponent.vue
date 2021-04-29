@@ -91,6 +91,7 @@ export default {
                         this.type = res.data.data.type;
                         this.slug = res.data.data.slug;
                         this.order = res.data.data.order;
+                        localStorage.setItem("urlProductDetail", this.slug.url);
                     }else{
                         this.product = {};
                         this.type = {};

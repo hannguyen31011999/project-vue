@@ -10,14 +10,22 @@ use App\Model\Order;
 use App\Model\Categories;
 use App\Model\Post;
 use App\Model\Slug;
+use App\Model\Visitor;
 use Mail;
 use Session;
 class ViewFrontendController extends Controller
 {
     private $module = 'frontend';
 
+    public function __construct(Request $request)
+    {
+        if($request->ip()!=''){
+            Visitor::create(['ip'=>$request->ip()]);
+        }
+    }
     public function viewIndex()
     {
+        
         return view($this->module.'.home.index_home');
     }
 
