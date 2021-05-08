@@ -6,12 +6,12 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <form action="#">
+            <form @submit.prevent="submitSeach()">
               <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">
-                    <select name="" id="" class="form-control">
-                      <option value="" selected>Loại nhà đất</option>
+                    <select name="" id="" class="form-control" v-model="seach.categories_id">
+                      <option value="0" selected>Loại nhà đất</option>
                       <option
                         v-for="(item, index) in categories"
                         :key="index"
@@ -22,18 +22,14 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-9">
                   <div class="form-group">
                     <input
                       type="text"
                       class="form-control"
                       placeholder="Tìm kiếm địa chỉ,khu vực"
+                      v-model="seach.keyword"
                     />
-                  </div>
-                </div>
-                <div class="col-md-2">
-                  <div class="form-group">
-                    <button type="submit" class="form-control">Tìm kiếm</button>
                   </div>
                 </div>
               </div>
@@ -44,7 +40,7 @@
                       name=""
                       id=""
                       class="form-control"
-                      v-model="seach.province"
+                      v-model="seach.province_id"
                       @change="changeProvince()"
                     >
                       <option value="0">Trên toàn quốc</option>
@@ -64,7 +60,7 @@
                       name=""
                       id=""
                       class="form-control"
-                      v-model="seach.district"
+                      v-model="seach.district_id"
                       @change="changeDistrict()"
                     >
                       <option value="0">Quận/huyện</option>
@@ -84,7 +80,7 @@
                       name=""
                       id=""
                       class="form-control"
-                      v-model="seach.ward"
+                      v-model="seach.ward_id"
                     >
                       <option value="0">Phường/xã</option>
                       <option
@@ -99,64 +95,7 @@
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <select name="" id="" class="form-control">
-                      <option value="">Diện tích</option>
-                      <option value="">&le;30m2</option>
-                      <option value="">30-50m2</option>
-                      <option value="">50-80m2</option>
-                      <option value="">80-100m2</option>
-                      <option value="">100-150m2</option>
-                      <option value="">150-200m2</option>
-                      <option value="">200-250m2</option>
-                      <option value="">250-300m2</option>
-                      <option value="">300-500m2</option>
-                      <option value="">&ge;500</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <select name="" id="" class="form-control">
-                      <option value="">Dự án</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <select name="" id="" class="form-control">
-                      <option value="">Số phòng</option>
-                      <option value="">Không xác định</option>
-                      <option value="">+1</option>
-                      <option value="">+2</option>
-                      <option value="">+3</option>
-                      <option value="">+4</option>
-                      <option value="">+5</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <select name="" id="" class="form-control">
-                      <option value="">Hướng nhà</option>
-                      <option value="">KXĐ</option>
-                      <option value="">Đông</option>
-                      <option value="">Tây</option>
-                      <option value="">Nam</option>
-                      <option value="">Bắc</option>
-                      <option value="">Đông-Bắc</option>
-                      <option value="">Tây-Bắc</option>
-                      <option value="">Đông-Nam</option>
-                      <option value="">Tây-Nam</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <select name="" id="" class="form-control">
-                      <option value="">Đường phố</option>
-                    </select>
+                    <button type="submit" class="form-control">Tìm kiếm</button>
                   </div>
                 </div>
               </div>
@@ -308,7 +247,7 @@
               >
                 <div class="block-18 text-center">
                   <div class="text">
-                    <strong class="number" data-number="9000">0</strong>
+                    <strong class="number">{{ count.user }}</strong>
                     <span>Khách hàng</span>
                   </div>
                 </div>
@@ -318,7 +257,7 @@
               >
                 <div class="block-18 text-center">
                   <div class="text">
-                    <strong class="number" data-number="10000">0</strong>
+                    <strong class="number">{{ count.product }}</strong>
                     <span>Sản phẩm</span>
                   </div>
                 </div>
@@ -328,7 +267,7 @@
               >
                 <div class="block-18 text-center">
                   <div class="text">
-                    <strong class="number" data-number="1000">0</strong>
+                    <strong class="number" >{{ count.post }}</strong>
                     <span>Tin tức</span>
                   </div>
                 </div>
@@ -338,7 +277,7 @@
               >
                 <div class="block-18 text-center">
                   <div class="text">
-                    <strong class="number" data-number="35000">0</strong>
+                    <strong class="number">{{count.visitor}}</strong>
                     <span>Lượt ghé thăm</span>
                   </div>
                 </div>
@@ -368,10 +307,13 @@ export default {
       district: [],
       ward: [],
       seach: {
-        province: "0",
-        district: "0",
-        ward: "0",
+        province_id: "0",
+        district_id: "0",
+        ward_id: "0",
+        categories_id:"0",
+        keyword:""
       },
+      count:{}
     };
   },
   methods: {
@@ -421,29 +363,58 @@ export default {
         })
         .catch((e) => {});
     },
+    getCount(){
+      axios.get(apiDomainUser + 'home/count/list')
+      .then(res => {
+        if(res.data.status){
+          this.count = res.data.data;
+        }
+      })
+      .catch(e => {
+
+      })
+    },
     changeProvince() {
+      this.district = [];
       if (this.seach.province !== "0") {
         let index = this.province.findIndex(
-          (item) => this.seach.province === item.id
+          (item) => this.seach.province_id === item.id
         );
         this.district = this.province[index].districts;
-      } else {
-        this.district = [];
       }
     },
     changeDistrict() {
+      this.ward = [];
       if (this.seach.district !== "0") {
         let index = this.province.findIndex(
-          (item) => this.seach.province === item.id
+          (item) => this.seach.province_id === item.id
         );
         this.province[index].wards.map((item, index) => {
-          if (item.district_id === this.seach.district) {
+          if (item.district_id === this.seach.district_id) {
             this.ward.push(item);
           }
         });
-      } else {
-        this.ward = [];
       }
+    },
+    submitSeach(){
+      axios.post(apiDomainUser + 'home/seach',this.seach)
+      .then(res => {
+        if(res.data.status){
+          if(res.data.data.url!==undefined&&res.data.data.categories_name===undefined){
+            localStorage.setItem('urlSeach',res.data.data.url);
+            window.location.href = '/nha-dat-ban/' + localStorage.getItem('urlSeach');
+          }else if(res.data.data.categories_name!==undefined){
+            window.location.href = '/' + res.data.data.url;
+          }
+          else{
+            localStorage.setItem('urlSeach',res.data.url);
+            window.location.href = '/nha-dat-ban/' + res.data.data;
+          }
+        }
+      })
+      .catch(e => {
+
+      })
     },
     convertDate(date) {
       let timePresent = new Date();
@@ -466,6 +437,7 @@ export default {
     this.getListCategories();
     this.getListProduct();
     this.getListProvince();
+    this.getCount();
   },
   mounted() {
     

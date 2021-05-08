@@ -43,6 +43,7 @@ export const seachOrderUrl = apiDomain + 'order/seach?token=';
 // dashboard
 export const listDashBoardUrl = apiDomain + 'dashboard/list?token=';
 
+
 import VueCookies from 'vue-cookies';
 
 export const getToken = function(){

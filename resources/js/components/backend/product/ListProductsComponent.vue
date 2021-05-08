@@ -63,8 +63,6 @@
                                 <td>{{ converDateTime(product.date_end) }}</td>
                                 <td>{{ product.price }}</td>
                                 <td>{{ product.area }}</td>
-                                <td v-if="product.status !==0">Tin còn hạn</td>
-                                <td v-else>Tin hết hạn</td>
                                 <td>
                                 <button
                                     data-toggle="modal"

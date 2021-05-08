@@ -63,7 +63,12 @@ class ApiWardController extends Controller
             ]);
         }else{
             try{
-                $create = Ward::create($request->all());
+                $create = Ward::create([
+                    'province_id'=>$request->province_id,
+                    'district_id'=>$request->district_id,
+                    'ward_name'=>$request->ward_name,
+                    'url'=>utf8tourl($request->ward_name)
+                ]);
                 if(!empty($create)){
                     return response()->json([
                         'status'=>true,
@@ -143,7 +148,12 @@ class ApiWardController extends Controller
         }else{
             try{
                 $update = Ward::findOrFail($id);
-                $update->update($request->all());
+                $update->update([
+                    'province_id'=>$request->province_id,
+                    'district_id'=>$request->district_id,
+                    'ward_name'=>$request->ward_name,
+                    'url'=>utf8tourl($request->ward_name)
+                ]);
                 if(!empty($update)){
                     return response()->json([
                         'status'=>true,

@@ -194,17 +194,11 @@ export default {
         .catch((e) => {});
     },
     redirectProductDetail(url) {
-      localStorage.setItem("urlProductDetail", url);
       window.location.href = "/tin-rao-ban/" + url;
     },
   },
   created() {
-    if (localStorage.getItem("listProductUrl") !== null) {
-      this.getListProductByCategories(localStorage.getItem("listProductUrl"));
-    }
-    if(localStorage.getItem('listProduct')!==null){
-      this.products = localStorage.getItem('listProduct');
-    }
+      this.getListProductByCategories(window.location.pathname.split('/')[1]);
   },
   mounted() {},
 };

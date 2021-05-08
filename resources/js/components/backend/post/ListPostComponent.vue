@@ -424,7 +424,6 @@ export default {
       formData.append('content',this.form.content);
       axios.post(createPostUrl + getToken(),formData,config)
       .then(res => {
-        console.log(res.data)
         this.errors = {};
         if(res.data.status===true){
           this.form.title = '',
@@ -478,7 +477,6 @@ export default {
     },
     deletePost(id,index){
       if (confirm("Do you really want to delete?")){
-        console.log(index)
         axios.delete(apiDomain + 'post/delete/' + id + '?token=' + getToken())
         .then(res => {
           if(res.data.status){

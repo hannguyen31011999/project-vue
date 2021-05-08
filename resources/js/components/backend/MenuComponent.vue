@@ -82,7 +82,7 @@
           <li>
             <a href="javascript: void(0);" class="waves-effect">
               <i class="mdi mdi-settings"></i>
-              <span> Setting </span>
+              <span> Quản lý banner </span>
             </a>
           </li>
         </ul>

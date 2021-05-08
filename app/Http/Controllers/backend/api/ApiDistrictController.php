@@ -62,7 +62,8 @@ class ApiDistrictController extends Controller
             try{
                 $input = [
                     'province_id'=>(int)$request->province_id,
-                    'district_name'=>$request->district_name
+                    'district_name'=>$request->district_name,
+                    'url'=>utf8tourl($request->district_name)
                 ];
                 $create = District::create($input);
                 if(!empty($create)){
@@ -136,7 +137,8 @@ class ApiDistrictController extends Controller
             try{
                 $input = [
                     'province_id'=>(int)$request->province_id,
-                    'district_name'=>$request->district_name
+                    'district_name'=>$request->district_name,
+                    'url'=>utf8tourl($request->district_name)
                 ];
                 $update = District::findOrFail($id);
                 $update->update($input);

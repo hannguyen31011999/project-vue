@@ -141,6 +141,12 @@ Route::group(['namespace'=>'frontend\api'],function(){
         Route::get('/post/list','ApiHomeController@getListPost');
         // list product
         Route::get('/product/list','ApiHomeController@getListProduct');
+        // list count
+        Route::get('/count/list','ApiHomeController@Count');
+        // seach
+        Route::post('/seach','ApiHomeController@seach');
+        // seach list
+        Route::get('/seach/list','ApiSeachController@index');
     });
     
     // list post

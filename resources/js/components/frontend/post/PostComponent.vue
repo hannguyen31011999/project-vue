@@ -133,7 +133,6 @@ export default {
       );
     },
     redirectDetailPost(url) {
-      localStorage.setItem("urlDetailPost", url);
       window.location.href = "/bai-viet/" + url;
     },
     changePage(page) {

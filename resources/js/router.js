@@ -32,6 +32,8 @@ import CreateProductComponent from './components/frontend/product/CreateProductC
 import ListProductComponent from './components/frontend/product/ListProductComponent.vue';
 import DetailProductComponent from './components/frontend/product/detail/DetailProductComponent.vue';
 import SeachOrderComponent from './components/frontend/seach/SeachOrderComponent.vue';
+import SeachHomeComponent from './components/frontend/seach/SeachHomeComponent.vue';
+
 export const routes = [
     // ADMIN
     {
@@ -147,5 +149,12 @@ export const routes = [
         name:'seachOrder',
         path:'/tra-cuu/hoa-don',
         component:SeachOrderComponent,
+    },
+    // seach
+    {
+        name:'seachHome',
+        path:'/nha-dat-ban/:url',
+        component:SeachHomeComponent,
+        props: route => ({ query: route.query.q })
     }
 ]

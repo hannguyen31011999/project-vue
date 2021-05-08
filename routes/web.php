@@ -59,4 +59,6 @@ Route::group(['namespace'=>'frontend'],function(){
     Route::get('/tin-rao-ban/{url}','ViewFrontendController@detailProduct');
     // filter order
     Route::get('/tra-cuu/hoa-don','ViewFrontendController@viewSeachOrder');
+    // seach
+    Route::get('/nha-dat-ban/{url}','ViewFrontendController@viewResultSeach');
 });

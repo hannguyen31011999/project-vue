@@ -51,7 +51,10 @@ class ApiProvinceController extends Controller
             ]);
         }else{
             try{
-                $create = Province::create($request->all());
+                $create = Province::create([
+                    'province_name'=>$request->province_name,
+                    'url'=>utf8tourl($request->province_name)
+                ]);
                 if(!empty($create)){
                     return response()->json([
                         'status'=>true,
@@ -123,7 +126,10 @@ class ApiProvinceController extends Controller
         }else{
             try{
                 $data = Province::findOrFail($id);
-                $data->update($request->all());
+                $data->update([
+                    'province_name'=>$request->province_name,
+                    'url'=>utf8tourl($request->province_name)
+                ]);
                 return response()->json([
                     'status'=>true,
                     'data'=>$data,

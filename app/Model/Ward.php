@@ -15,6 +15,7 @@ class Ward extends Model
         'province_id',
         'district_id',
         'ward_name',
+        'url',
         'created_at',
         'deleted_at'
     ];

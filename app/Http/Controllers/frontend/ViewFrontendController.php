@@ -109,4 +109,9 @@ class ViewFrontendController extends Controller
     {
         return view($this->module.'.seach.seach_order');
     }
+
+    public function viewResultSeach($url)
+    {
+        return view($this->module.'.seach.seach_home');
+    }
 }

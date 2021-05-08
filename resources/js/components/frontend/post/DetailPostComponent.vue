@@ -8,12 +8,6 @@
             <div class="content" v-html="post.content"></div>
             <div style="float:right;"><p style="font-weight:bold;">{{ post.fullname }}</p></div>
             <div class="tag-widget post-tag-container mb-5 mt-5">
-              <div class="tagcloud">
-                <a href="#" class="tag-cloud-link">Life</a>
-                <a href="#" class="tag-cloud-link">Sport</a>
-                <a href="#" class="tag-cloud-link">Tech</a>
-                <a href="#" class="tag-cloud-link">Travel</a>
-              </div>
             </div>
             
             <div class="about-author d-flex p-4 bg-light">
@@ -21,7 +15,7 @@
                 <img src="/frontend/images/person_1.jpg" alt="Image placeholder" class="img-fluid mb-4">
               </div>
               <div class="desc align-self-md-center">
-                <h3>Nguyễn Việt Hân</h3>
+                <h3>{{ post.fullname }}</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, autem necessitatibus voluptate quod mollitia delectus aut, sunt placeat nam vero culpa sapiente consectetur similique, inventore eos fugit cupiditate numquam!</p>
               </div>
             </div>
@@ -71,8 +65,7 @@
               </div>
             </div>
 
-            <div class="sidebar-box ftco-animate">
-              <img src="/assets/image_post/quangcao.jpg" alt="">
+            <div class="sidebar-box ftco-animate">  
               <img src="/assets/image_post/sunbay.gif" alt="">
             </div>
           </div>

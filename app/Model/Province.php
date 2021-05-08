@@ -13,6 +13,7 @@ class Province extends Model
     protected $fillable = [
         'id',
         'province_name',
+        'url',
         'created_at',
         'deleted_at'
     ];

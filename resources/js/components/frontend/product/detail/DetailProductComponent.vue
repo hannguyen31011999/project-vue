@@ -129,7 +129,6 @@ export default {
                 if(res.data.status){
                     this.product = res.data.data.product;
                     this.post = res.data.data.post;
-                    // this.relate = res.data.data.relate;
                     res.data.data.relate.map((item,index) => {
                       this.relate.push(item);
                       this.relate[index].product_images.map((img,i) => {
@@ -142,6 +141,9 @@ export default {
                     this.product.product_images.map((item,index) => {
                         this.data.push('<div class="example-slide"><img src="/assets/image_product/'+ item.image +'" height="350" width="730"></div>');
                     });
+                }else{
+                  alert('Tin đăng bán đã hết hạn');
+                  window.location.href = '/';
                 }
             })
             .catch(e => {
@@ -157,14 +159,11 @@ export default {
             window.location.href = '/bai-viet/' + url ;
         },
         redirectProductDetail(url) {
-            localStorage.setItem("urlProductDetail", url);
             window.location.href = "/tin-rao-ban/" + url;
         }
     },
     created(){
-        if(localStorage.getItem('urlProductDetail')!==null){
-            this.getListProduct(localStorage.getItem('urlProductDetail'));
-        }
+      this.getListProduct(window.location.pathname.split('/')[2]);
     },
     mounted(){
 

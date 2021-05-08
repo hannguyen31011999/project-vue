@@ -37,7 +37,6 @@
                                             <th>Ngày bắt đầu</th>
                                             <th>Ngày kết thúc</th>
                                             <th>Đường dẫn</th>
-                                            <th>Trạng thái</th>
                                             <th>Tổng tiền(10% VAT)</th>
                                         </thead>
                                         <tbody>
@@ -46,9 +45,6 @@
                                             <td v-if="product.status!==undefined">{{ convertDatetime(product.date_start) }}</td>
                                             <td v-if="product.status!==undefined">{{ convertDatetime(product.date_end) }}</td>
                                             <td><a :href="'../tin-rao-ban/' + slug.url">{{ slug.url }}</a></td>
-                                            <td v-if="product.status!==undefined&&product.status === 1">Tin còn thời hạn</td>
-                                            <td v-if="product.status!==undefined&&product.status === 0">Tin hết hạn</td>
-                                            <td v-if="product.status===undefined"></td>
                                             <td v-if="order.price!==undefined">{{ convertCurrency(order.total_date * order.price) }}</td>
                                         </tbody>
                                     </table>

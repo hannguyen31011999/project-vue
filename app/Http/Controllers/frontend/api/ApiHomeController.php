@@ -17,6 +17,7 @@ use App\Model\Province;
 use App\Model\District;
 use App\Model\Product;
 use App\Model\Ward;
+use App\Model\Visitor;
 use Carbon\Carbon;
 class ApiHomeController extends Controller
 {
@@ -79,6 +80,21 @@ class ApiHomeController extends Controller
         return response()->json([
             'status'=>true,
             'data'=>$province,
+            'errors'=>null
+        ]);
+    }
+
+    public function Count()
+    {
+        $count = [];
+        $count['product'] = Product::count();
+        $count['user'] = User::where('id_role','=',2)->count();
+        $count['post'] = Post::count();
+        $count ['visitor'] = Visitor::count();
+
+        return response()->json([
+            'status'=>true,
+            'data'=>$count,
             'errors'=>null
         ]);
     }
@@ -225,6 +241,89 @@ class ApiHomeController extends Controller
                 'status' => false,
                 'message' => 'Sorry, the user cannot be logged out'
             ], 500);
+        }
+    }
+
+    public function seach(Request $request)
+    {
+        $datePresent = Carbon::now();
+        $result = null;
+        $url = null;
+        if($request->categories_id!=null&&$request->categories_id!='0'){
+            if($request->province_id!=null&&$request->province_id!='0')
+            {
+                if($request->district_id!=null&&$request->district_id!='0')
+                {
+                    if($request->ward_id!=null&&$request->ward_id!='0')
+                    {
+                        if($request->keyword!=null)
+                        {
+                            $ward = Ward::Where('id','=',$request->ward_id)->first();
+                            $result = $ward->url.'?q='.($request->keyword);
+                            $url = $request->keyword;
+                        }
+                        else
+                        {
+                            $result = Ward::Where('id','=',$request->ward_id)->first();
+                        }
+                    }
+                    else
+                    {
+                        $result = District::Where('id','=',$request->district_id)->first();
+                    }
+                }
+                else
+                {
+                    $result = Province::Where('id','=',$request->province_id)->first();
+                }
+            }
+            else
+            {
+                $result = Categories::Where('id','=',$request->categories_id)->first();
+            }
+        }
+        else
+        {
+            if($request->province_id!=null&&$request->province_id!='0')
+            {
+                if($request->district_id!=null&&$request->district_id!='0')
+                {
+                    if($request->ward_id!=null&&$request->ward_id!='0')
+                    {
+                        if($request->keyword!=null)
+                        {
+                            $ward = Ward::Where('id','=',$request->ward_id)->first();
+                            $result = $ward->url.'?q='.utf8tourl($request->keyword);
+                            $url = $request->keyword;
+                        }
+                        else
+                        {
+                            $result = Ward::Where('id','=',$request->ward_id)->first();
+                        }
+                    }
+                    else
+                    {
+                        $result = District::Where('id','=',$request->district_id)->first();
+                    }
+                }
+                else
+                {
+                    $result = Province::Where('id','=',$request->province_id)->first();
+                }
+            }
+        }
+        if(!empty($result)&&empty($url)){
+            return response()->json([
+                'status'=>true,
+                'data'=>$result,
+                'errors'=>null
+            ]);
+        }else{
+            return response()->json([
+                'status'=>true,
+                'data'=>$result,
+                'url'=>$url
+            ]);
         }
     }
 }

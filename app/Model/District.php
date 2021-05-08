@@ -14,6 +14,7 @@ class District extends Model
         'id',
         'province_id',
         'district_name',
+        'url',
         'created_at',
         'deleted_at'
     ];
